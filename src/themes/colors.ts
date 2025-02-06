@@ -15,6 +15,7 @@ export const colors = {
     success: '#4CAF50',
     warning: '#FFC107',
     info: '#2196F3',
+    hover: 'rgba(0, 0, 0, 0.05)',
   },
   blue: {
     primary: '#1976D2',
@@ -32,6 +33,7 @@ export const colors = {
     success: '#2E7D32',
     warning: '#F57F17',
     info: '#0288D1',
+    hover: 'rgba(0, 0, 0, 0.05)',
   },
   orange: {
     primary: '#F57C00',
@@ -49,7 +51,20 @@ export const colors = {
     success: '#2E7D32',
     warning: '#FF6F00',
     info: '#EF6C00',
+    hover: 'rgba(0, 0, 0, 0.05)',
   },
 };
 
-export type ThemeColors = typeof colors.default; 
+export type ThemeColors = typeof colors.default;
+
+export const lightColors: ThemeColors = {
+  // ... 其他颜色
+  hover: 'rgba(0, 0, 0, 0.05)',  // 轻微的黑色透明度作为悬停效果
+  // ... 其他颜色
+};
+
+export const darkColors: ThemeColors = {
+  // ... 其他颜色
+  hover: 'rgba(255, 255, 255, 0.1)',  // 轻微的白色透明度作为悬停效果
+  // ... 其他颜色
+}; 

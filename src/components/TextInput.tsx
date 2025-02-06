@@ -1,70 +1,143 @@
-import React from 'react';
+import React, { forwardRef, useState } from 'react';
 import { 
   TextInput as RNTextInput, 
   TextInputProps as RNTextInputProps,
   StyleSheet,
   View,
+  ViewStyle,
+  TextStyle,
+  Pressable,
 } from 'react-native';
 import { Text } from './Text';
 import { useThemeContext } from '../themes/ThemeProvider';
-import { moderateScale, spacing } from '../utils/responsive';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useResponsive } from '../utils/responsive';
 
-interface TextInputProps extends RNTextInputProps {
+interface Props extends Omit<RNTextInputProps, 'style'> {
   label?: string;
   error?: string;
+  leftIcon?: keyof typeof MaterialIcons.glyphMap;
+  rightIcon?: keyof typeof MaterialIcons.glyphMap;
+  onRightIconPress?: () => void;
+  containerStyle?: ViewStyle;
+  inputStyle?: TextStyle;
+  labelStyle?: TextStyle;
 }
 
-export const TextInput = ({ 
+export const TextInput = forwardRef<RNTextInput, Props>(({
   label,
   error,
-  style,
+  leftIcon,
+  rightIcon,
+  onRightIconPress,
+  containerStyle,
+  inputStyle,
+  labelStyle,
+  onFocus,
+  onBlur,
   ...props
-}: TextInputProps) => {
+}, ref) => {
   const { theme } = useThemeContext();
+  const { layout } = useResponsive();
+  const [isFocused, setIsFocused] = useState(false);
+
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: layout.gutter,
+    },
+    label: {
+      marginBottom: layout.gutter / 2,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderRadius: 8,
+      borderColor: error 
+        ? theme.colors.error 
+        : isFocused
+          ? theme.colors.primary 
+          : theme.colors.border,
+      backgroundColor: theme.colors.surface,
+      paddingHorizontal: layout.gutter,
+      minHeight: layout.gutter * 3,
+    },
+    input: {
+      flex: 1,
+      color: theme.colors.text.primary,
+      fontSize: theme.typography.sizes.body,
+      paddingVertical: layout.gutter / 2,
+      marginLeft: leftIcon ? layout.gutter / 2 : 0,
+      marginRight: rightIcon ? layout.gutter / 2 : 0,
+    },
+    icon: {
+      color: error 
+        ? theme.colors.error 
+        : theme.colors.text.secondary,
+    },
+    error: {
+      marginTop: layout.gutter / 2,
+      color: theme.colors.error,
+    },
+  });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {label && (
-        <Text variant="small" style={styles.label}>
+        <Text 
+          variant="small" 
+          style={[styles.label, labelStyle]}
+        >
           {label}
         </Text>
       )}
-      <RNTextInput
-        style={[
-          styles.input,
-          {
-            borderColor: error ? theme.colors.error : theme.colors.border,
-            color: theme.colors.text.primary,
-          },
-          style,
-        ]}
-        placeholderTextColor={theme.colors.text.disabled}
-        {...props}
-      />
+      
+      <View style={styles.inputContainer}>
+        {leftIcon && (
+          <MaterialIcons
+            name={leftIcon}
+            size={20}
+            style={styles.icon}
+          />
+        )}
+        
+        <RNTextInput
+          ref={ref}
+          placeholderTextColor={theme.colors.text.disabled}
+          onFocus={(e) => {
+            setIsFocused(true);
+            onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setIsFocused(false);
+            onBlur?.(e);
+          }}
+          {...props}
+          style={[styles.input, inputStyle]}
+        />
+        
+        {rightIcon && (
+          <Pressable onPress={onRightIconPress}>
+            <MaterialIcons
+              name={rightIcon}
+              size={20}
+              style={styles.icon}
+            />
+          </Pressable>
+        )}
+      </View>
+
       {error && (
-        <Text variant="small" color="error" style={styles.error}>
+        <Text 
+          variant="small" 
+          style={styles.error}
+        >
           {error}
         </Text>
       )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: spacing.md,
-  },
-  label: {
-    marginBottom: 8,
-  },
-  input: {
-    height: moderateScale(48),
-    borderWidth: 1,
-    borderRadius: moderateScale(8),
-    paddingHorizontal: spacing.md,
-    fontSize: moderateScale(16),
-  },
-  error: {
-    marginTop: 4,
-  },
 });
+
+TextInput.displayName = 'TextInput';

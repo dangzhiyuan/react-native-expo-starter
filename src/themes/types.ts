@@ -14,6 +14,7 @@ export interface Theme {
     success: string;
     warning: string;
     border: string;
+    hover: string;
     text: {
       primary: string;
       secondary: string;
@@ -36,6 +37,38 @@ export interface Theme {
       h3: FontWeight;
       body: FontWeight;
       small: FontWeight;
+    };
+  };
+  shadows: {
+    small: {
+      shadowColor: string;
+      shadowOffset: {
+        width: number;
+        height: number;
+      };
+      shadowOpacity: number;
+      shadowRadius: number;
+      elevation: number;
+    };
+    medium: {
+      shadowColor: string;
+      shadowOffset: {
+        width: number;
+        height: number;
+      };
+      shadowOpacity: number;
+      shadowRadius: number;
+      elevation: number;
+    };
+    large: {
+      shadowColor: string;
+      shadowOffset: {
+        width: number;
+        height: number;
+      };
+      shadowOpacity: number;
+      shadowRadius: number;
+      elevation: number;
     };
   };
 } 

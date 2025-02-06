@@ -5,14 +5,15 @@ import type {
   DrawerNavigationOptions 
 } from '@react-navigation/drawer';
 import { useThemeContext } from '../themes/ThemeProvider';
+import { useResponsive } from '../utils/responsive';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 import { ComponentsScreen } from '../screens/ComponentsScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { HomeScreen } from '../screens/HomeScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { DrawerToggleButton } from '../components/DrawerToggleButton';
-import { moderateScale, isTablet } from '../utils/responsive';
-import { HomeScreen } from '../screens/HomeScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +24,16 @@ interface DrawerIconProps {
 
 export const DrawerNavigator = () => {
   const { theme } = useThemeContext();
+  const { layout } = useResponsive();
+  const { up } = useBreakpoint();
+
+  const getDrawerWidth = () => {
+    if (up('xl')) return '20%';
+    if (up('lg')) return '25%';
+    if (up('md')) return '30%';
+    if (up('sm')) return '40%';
+    return '75%';
+  };
 
   const renderDrawerIcon = (name: keyof typeof MaterialIcons.glyphMap) => {
     return ({ color, size }: DrawerIconProps) => (
@@ -30,31 +41,36 @@ export const DrawerNavigator = () => {
     );
   };
 
+  const screenOptions: DrawerNavigationOptions = {
+    headerStyle: {
+      backgroundColor: theme.colors.primary,
+      height: layout.gutter * 3.5,
+    },
+    headerTintColor: theme.colors.text.inverse,
+    headerTitleStyle: {
+      fontWeight: theme.typography.weights.h2,
+      fontSize: theme.typography.sizes.h3,
+    },
+    drawerStyle: {
+      backgroundColor: theme.colors.background,
+      width: getDrawerWidth(),
+    },
+    drawerType: up('md') ? 'permanent' : 'front',
+    drawerPosition: 'right',
+    drawerActiveTintColor: theme.colors.primary,
+    drawerInactiveTintColor: theme.colors.text.secondary,
+    headerLeft: () => null,
+    headerRight: ({ tintColor }: { tintColor?: string }) => (
+      !up('md') && <DrawerToggleButton tintColor={tintColor} />
+    ),
+  };
+
   return (
     <Drawer.Navigator
       drawerContent={(props: DrawerContentComponentProps) => (
         <CustomDrawerContent {...props} />
       )}
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.primary,
-        },
-        headerTintColor: theme.colors.text.inverse,
-        headerTitleStyle: {
-          fontWeight: theme.typography.weights.h2,
-        },
-        drawerStyle: {
-          backgroundColor: theme.colors.background,
-          width: isTablet ? '40%' : '75%',
-        },
-        drawerPosition: 'right',
-        drawerActiveTintColor: theme.colors.primary,
-        drawerInactiveTintColor: theme.colors.text.secondary,
-        headerLeft: () => null,
-        headerRight: ({ tintColor }: { tintColor?: string }) => (
-          <DrawerToggleButton tintColor={tintColor} />
-        ),
-      }}
+      screenOptions={screenOptions}
     >
       <Drawer.Screen 
         name="Home" 
