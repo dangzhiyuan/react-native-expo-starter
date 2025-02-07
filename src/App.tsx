@@ -1,11 +1,11 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { ThemeProvider } from './themes/ThemeProvider';
-import { AnimatedThemeProvider } from './themes/AnimatedThemeContext';
-import { ToastProvider } from './components/Toast/ToastContext';
-import { RootNavigator } from './navigation/RootNavigator';
-import { StatusBar } from 'expo-status-bar';
-import { useAppState } from './hooks/useAppState';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider } from "./themes/ThemeProvider";
+import { AnimatedThemeProvider } from "./themes/AnimatedThemeContext";
+import { ToastProvider } from "./components/Toast/ToastContext";
+import { RootNavigator } from "./navigation/RootNavigator";
+import { StatusBar } from "expo-status-bar";
+import { useAppState } from "./hooks/useAppState";
 
 const AppContent = () => {
   // 在 ToastProvider 内部使用 useAppState
@@ -14,7 +14,7 @@ const AppContent = () => {
   return (
     <NavigationContainer>
       <RootNavigator />
-      <StatusBar style="auto" />
+      <StatusBar style="auto" hidden={true} />
     </NavigationContainer>
   );
 };
@@ -31,4 +31,4 @@ const App = () => {
   );
 };
 
-export default App; 
+export default App;

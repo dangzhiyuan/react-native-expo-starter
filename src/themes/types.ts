@@ -1,6 +1,6 @@
-export type ColorTheme = 'default' | 'blue' | 'orange';
-export type DisplayMode = 'light' | 'dark' | 'system';
-export type FontWeight = '400' | '500' | '600' | 'normal' | 'bold';
+export type ColorTheme = "default" | "blue" | "orange";
+export type DisplayMode = "light" | "dark" | "system";
+export type FontWeight = "400" | "500" | "600" | "normal" | "bold";
 
 export interface Theme {
   isDark: boolean;
@@ -15,6 +15,7 @@ export interface Theme {
     warning: string;
     border: string;
     hover: string;
+    shadowColor: string;
     text: {
       primary: string;
       secondary: string;
@@ -71,4 +72,4 @@ export interface Theme {
       elevation: number;
     };
   };
-} 
+}
