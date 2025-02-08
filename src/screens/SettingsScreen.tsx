@@ -1,73 +1,74 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { ScreenContainer } from '../components/layout/ScreenContainer';
-import { Container } from '../components/layout/Container';
-import { Card } from '../components/layout/Card';
-import { Column } from '../components/layout/Column';
-import { Row } from '../components/layout/Row';
-import { Divider } from '../components/layout/Divider';
-import { Text } from '../components/Text';
-import Button from '../components/Button';
-import { useThemeContext } from '../themes/ThemeProvider';
-import { DisplayMode, ColorTheme } from '../themes/types';
-import { useResponsive } from '../utils/responsive';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { ScreenContainer } from "../components/layout/ScreenContainer";
+import { Container } from "../components/layout/Container";
+import { Card } from "../components/layout/Card";
+import { Column } from "../components/layout/Column";
+import { Row } from "../components/layout/Row";
+import { Divider } from "../components/layout/Divider";
+import { Text } from "../components/Text";
+import Button from "../components/Button";
+import { useTheme } from "../themes/ThemeProvider";
+import type { ThemeMode, ColorScheme } from "../themes/types";
+import { useResponsive } from "../utils/responsive";
 
 export const SettingsScreen = () => {
-  const { 
-    displayMode, 
-    setDisplayMode,
-    colorTheme,
-    setColorTheme,
-  } = useThemeContext();
+  const { theme, setThemeMode, setColorScheme } = useTheme();
   const { layout, device } = useResponsive();
   const [isChanging, setIsChanging] = useState(false);
 
-  const handleDisplayModeChange = async (mode: DisplayMode) => {
+  const handleDisplayModeChange = async (mode: ThemeMode) => {
     try {
       setIsChanging(true);
-      await setDisplayMode(mode);
+      await setThemeMode(mode);
     } catch (error) {
-      console.error('Theme change error:', error);
+      console.error("Theme change error:", error);
     } finally {
       setIsChanging(false);
     }
   };
 
-  const handleColorThemeChange = async (theme: ColorTheme) => {
+  const handleColorThemeChange = async (scheme: ColorScheme) => {
     try {
       setIsChanging(true);
-      await setColorTheme(theme);
+      await setColorScheme(scheme);
     } catch (error) {
-      console.error('Theme change error:', error);
+      console.error("Theme change error:", error);
     } finally {
       setIsChanging(false);
     }
   };
 
-  const displayModeOptions = [
-    { label: '跟随系统', value: 'system' as const },
-    { label: '浅色模式', value: 'light' as const },
-    { label: '深色模式', value: 'dark' as const },
+  const displayModeOptions: Array<{ label: string; value: ThemeMode }> = [
+    { label: "浅色模式", value: "light" },
+    { label: "深色模式", value: "dark" },
   ];
 
-  const colorThemeOptions = [
-    { label: '默认主题', value: 'default' as const },
-    { label: '蓝色主题', value: 'blue' as const },
-    { label: '橙色主题', value: 'orange' as const },
+  const colorThemeOptions: Array<{ label: string; value: ColorScheme }> = [
+    { label: "默认主题", value: "default" },
+    { label: "蓝色主题", value: "blue" },
+    { label: "橙色主题", value: "orange" },
+    { label: "灰色主题", value: "gray" },
+    { label: "粉色主题", value: "pink" },
+    { label: "小清新主题", value: "pastel" },
   ];
 
   return (
     <ScreenContainer>
-      <Container maxWidth={device === 'phone' ? '100%' : 600}>
+      <Container maxWidth={device === "phone" ? "100%" : 600}>
         <Column spacing={layout.gutter}>
           <Card variant="elevated">
             <Text variant="h2">显示模式</Text>
             <Column spacing={layout.gutter / 2}>
-              {displayModeOptions.map(option => (
+              {displayModeOptions.map((option) => (
                 <Button
                   key={option.value}
                   title={option.label}
-                  variant={displayMode === option.value ? 'primary' : 'outline'}
+                  variant={
+                    theme.isDark === (option.value === "dark")
+                      ? "primary"
+                      : "outline"
+                  }
                   loading={isChanging}
                   onPress={() => handleDisplayModeChange(option.value)}
                 />
@@ -78,11 +79,13 @@ export const SettingsScreen = () => {
           <Card variant="elevated">
             <Text variant="h2">主题颜色</Text>
             <Column spacing={layout.gutter / 2}>
-              {colorThemeOptions.map(option => (
+              {colorThemeOptions.map((option) => (
                 <Button
                   key={option.value}
                   title={option.label}
-                  variant={colorTheme === option.value ? 'primary' : 'outline'}
+                  variant={
+                    theme.colorScheme === option.value ? "primary" : "outline"
+                  }
                   loading={isChanging}
                   onPress={() => handleColorThemeChange(option.value)}
                 />
@@ -103,4 +106,4 @@ export const SettingsScreen = () => {
       </Container>
     </ScreenContainer>
   );
-}; 
+};

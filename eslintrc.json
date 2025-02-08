@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "../themes/ThemeProvider",
+            "importNames": ["useThemeContext"],
+            "message": "Please use useTheme instead of useThemeContext."
+          }
+        ]
+      }
+    ]
+  }
+}

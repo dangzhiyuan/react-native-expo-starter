@@ -1,35 +1,40 @@
-import React, { createContext, useContext, useRef, useEffect } from 'react';
-import { Animated } from 'react-native';
-import { useThemeContext } from './ThemeProvider';
+import React, { createContext, useContext } from "react";
+import { useTheme } from "./ThemeProvider";
+import type { Theme } from "./types";
+import Animated, {
+  useAnimatedReaction,
+  withTiming,
+  useSharedValue,
+} from "react-native-reanimated";
 
 interface AnimatedThemeContextType {
-  animatedValue: Animated.Value;
-  interpolateColor: (lightColor: string, darkColor: string) => Animated.AnimatedInterpolation<string>;
+  theme: Theme;
 }
 
-const AnimatedThemeContext = createContext<AnimatedThemeContextType | undefined>(undefined);
+const AnimatedThemeContext = createContext<
+  AnimatedThemeContextType | undefined
+>(undefined);
 
-export const AnimatedThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { theme, displayMode } = useThemeContext();
-  const animatedValue = useRef(new Animated.Value(theme.isDark ? 1 : 0)).current;
+export const AnimatedThemeProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const { theme } = useTheme();
+  const animatedValue = useSharedValue(theme.isDark ? 1 : 0);
 
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: theme.isDark ? 1 : 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [displayMode]);
-
-  const interpolateColor = (lightColor: string, darkColor: string) => {
-    return animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [lightColor, darkColor],
-    });
-  };
+  useAnimatedReaction(
+    () => theme.isDark,
+    (isDark) => {
+      animatedValue.value = withTiming(isDark ? 1 : 0, {
+        duration: 300,
+      });
+    },
+    [theme.isDark]
+  );
 
   return (
-    <AnimatedThemeContext.Provider value={{ animatedValue, interpolateColor }}>
+    <AnimatedThemeContext.Provider value={{ theme }}>
       {children}
     </AnimatedThemeContext.Provider>
   );
@@ -38,7 +43,9 @@ export const AnimatedThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useAnimatedTheme = () => {
   const context = useContext(AnimatedThemeContext);
   if (!context) {
-    throw new Error('useAnimatedTheme must be used within an AnimatedThemeProvider');
+    throw new Error(
+      "useAnimatedTheme must be used within an AnimatedThemeProvider"
+    );
   }
   return context;
-}; 
+};

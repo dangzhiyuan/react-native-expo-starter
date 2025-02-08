@@ -26,7 +26,7 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 export const LoginScreen = () => {
-  const { styles: themeStyles, theme } = useThemeContext();
+  const { theme } = useThemeContext();
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const login = useAuthStore((state) => state.login);
 
@@ -95,9 +95,6 @@ export const LoginScreen = () => {
       >
         <Background source={require("../../../assets/images/background.png")}>
           <Card variant="elevated">
-            {/* <View
-            style={[themeStyles.card, themeStyles.shadow, styles.loginCard]}
-          > */}
             <Text variant="h1" style={styles.title}>
               欢迎回来
             </Text>
@@ -109,7 +106,7 @@ export const LoginScreen = () => {
               <MaterialIcons
                 name="person-outline"
                 size={20}
-                color={theme.colors.text.secondary}
+                color={theme.text.secondary}
                 style={styles.inputIcon}
               />
               <TextInput
@@ -118,12 +115,12 @@ export const LoginScreen = () => {
                   {
                     borderColor:
                       usernameError && touched.username
-                        ? theme.colors.error
-                        : theme.colors.border,
+                        ? theme.error
+                        : theme.border,
                   },
                 ]}
                 placeholder="用户名"
-                placeholderTextColor={theme.colors.text.disabled}
+                placeholderTextColor={theme.text.disabled}
                 value={username}
                 onChangeText={handleUsernameChange}
                 onBlur={() =>
@@ -142,7 +139,7 @@ export const LoginScreen = () => {
               <MaterialIcons
                 name="lock-outline"
                 size={20}
-                color={theme.colors.text.secondary}
+                color={theme.text.secondary}
                 style={styles.inputIcon}
               />
               <TextInput
@@ -151,12 +148,12 @@ export const LoginScreen = () => {
                   {
                     borderColor:
                       passwordError && touched.password
-                        ? theme.colors.error
-                        : theme.colors.border,
+                        ? theme.error
+                        : theme.border,
                   },
                 ]}
                 placeholder="密码"
-                placeholderTextColor={theme.colors.text.disabled}
+                placeholderTextColor={theme.text.disabled}
                 value={password}
                 onChangeText={handlePasswordChange}
                 onBlur={() =>
@@ -171,7 +168,7 @@ export const LoginScreen = () => {
                 <MaterialIcons
                   name={showPassword ? "visibility" : "visibility-off"}
                   size={20}
-                  color={theme.colors.text.secondary}
+                  color={theme.text.secondary}
                 />
               </Pressable>
             </View>
@@ -206,10 +203,7 @@ export const LoginScreen = () => {
 
             <View style={styles.divider}>
               <View
-                style={[
-                  styles.dividerLine,
-                  { backgroundColor: theme.colors.border },
-                ]}
+                style={[styles.dividerLine, { backgroundColor: theme.border }]}
               />
               <Text
                 variant="small"
@@ -219,10 +213,7 @@ export const LoginScreen = () => {
                 或者
               </Text>
               <View
-                style={[
-                  styles.dividerLine,
-                  { backgroundColor: theme.colors.border },
-                ]}
+                style={[styles.dividerLine, { backgroundColor: theme.border }]}
               />
             </View>
 
@@ -231,7 +222,6 @@ export const LoginScreen = () => {
               variant="outline"
               onPress={() => navigation.navigate("Register")}
             />
-            {/* </View> */}
           </Card>
         </Background>
       </ScrollView>
@@ -251,12 +241,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-  },
-  loginCard: {
-    padding: spacing.lg,
-    maxWidth: isTablet ? 500 : "100%",
-    alignSelf: "center",
-    width: "100%",
   },
   title: {
     marginBottom: spacing.sm,

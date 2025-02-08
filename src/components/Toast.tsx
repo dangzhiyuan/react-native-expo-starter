@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
-import { Animated, StyleSheet } from 'react-native';
-import { Text } from './Text';
-import { useThemeContext } from '../themes/ThemeProvider';
+import React, { useEffect, useRef } from "react";
+import { Animated, StyleSheet } from "react-native";
+import { Text } from "./Text";
+import { useTheme } from "../themes/ThemeProvider";
 
 interface ToastProps {
   message: string;
   duration?: number;
   onHide: () => void;
+  type?: "success" | "error" | "warning" | "info";
 }
 
-export const Toast = ({ message, duration = 2000, onHide }: ToastProps) => {
-  const { theme } = useThemeContext();
-  const opacity = new Animated.Value(0);
+export const Toast = ({
+  message,
+  duration = 2000,
+  onHide,
+  type = "success",
+}: ToastProps) => {
+  const { theme } = useTheme();
+  const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.sequence([
@@ -29,11 +35,26 @@ export const Toast = ({ message, duration = 2000, onHide }: ToastProps) => {
     ]).start(() => onHide());
   }, []);
 
+  const getBackgroundColor = () => {
+    switch (type) {
+      case "success":
+        return theme.success;
+      case "error":
+        return theme.error;
+      case "warning":
+        return theme.warning;
+      case "info":
+        return theme.primary;
+      default:
+        return theme.success;
+    }
+  };
+
   return (
-    <Animated.View 
+    <Animated.View
       style={[
-        styles.container, 
-        { backgroundColor: theme.colors.text.primary, opacity }
+        styles.container,
+        { backgroundColor: getBackgroundColor(), opacity },
       ]}
     >
       <Text variant="body" color="inverse" style={styles.text}>
@@ -45,21 +66,21 @@ export const Toast = ({ message, duration = 2000, onHide }: ToastProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 100,
     left: 20,
     right: 20,
     padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   text: {
-    textAlign: 'center',
+    textAlign: "center",
   },
-}); 
+});

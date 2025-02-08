@@ -1,87 +1,214 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from './Text';
-import { useThemeContext } from '../themes/ThemeProvider';
-import Button from './Button';
-import { useResponsive } from '../utils/responsive';
-import { Column } from '../components/layout/Column';
+import React, { useState, useCallback } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Text } from "./Text";
+import { TextInput } from "./TextInput";
+import Button from "./Button";
+import { useTheme } from "../themes/ThemeProvider";
+import { useResponsive } from "../utils/responsive";
+import { MaterialIcons } from "@expo/vector-icons";
+import { List, ListItem } from "./List";
+import type { ColorScheme } from "../themes/types";
 
 export const ComponentsShowcase = () => {
+  const { theme, setThemeMode, setColorScheme } = useTheme();
   const { layout } = useResponsive();
-  const { styles: themeStyles } = useThemeContext();
+  const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChanging, setIsChanging] = useState(false);
+
+  const handleSave = useCallback(() => {
+    setIsLoading((prev) => !prev);
+  }, []);
+
+  const handleThemeChange = useCallback(
+    async (scheme: ColorScheme) => {
+      setIsChanging(true);
+      try {
+        await setColorScheme(scheme);
+      } finally {
+        setIsChanging(false);
+      }
+    },
+    [setColorScheme]
+  );
+
+  const handleModeChange = useCallback(
+    async (isDark: boolean) => {
+      setIsChanging(true);
+      try {
+        await setThemeMode(isDark ? "dark" : "light");
+      } finally {
+        setIsChanging(false);
+      }
+    },
+    [setThemeMode]
+  );
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: layout.padding,
+    },
+    section: {
+      marginBottom: layout.gutter * 2,
+    },
+    card: {
+      padding: layout.gutter,
+      borderRadius: 8,
+      backgroundColor: theme.surface,
+      shadowColor: theme.text.primary,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: layout.gutter,
+      marginTop: layout.gutter,
+    },
+    button: {
+      flex: 1,
+      minWidth: "30%",
+    },
+  });
+
+  const colorThemeOptions: Array<{ label: string; value: ColorScheme }> = [
+    { label: "默认主题", value: "default" },
+    { label: "蓝色主题", value: "blue" },
+    { label: "橙色主题", value: "orange" },
+    { label: "灰色主题", value: "gray" },
+  ];
 
   return (
-    <Column spacing={layout.gutter}>
-      <Text variant="h2">组件样式</Text>
-      <Text variant="body" color="secondary">
-        展示各种组件的样式和状态：
-      </Text>
-
-      <Column spacing={layout.gutter / 2}>
-        <Text variant="h3">按钮样式</Text>
-        <Button
-          title="主要按钮"
-          variant="primary"
-        />
-        <Button
-          title="次要按钮"
-          variant="secondary"
-        />
-        <Button
-          title="边框按钮"
-          variant="outline"
-        />
-        <Button
-          title="加载中按钮"
-          loading={true}
-        />
-        <Button
-          title="禁用按钮"
-          disabled={true}
-        />
-      </Column>
-
-      <Column spacing={layout.gutter / 2}>
-        <Text variant="h3">文字样式</Text>
-        <Text variant="h1">标题1</Text>
-        <Text variant="h2">标题2</Text>
-        <Text variant="h3">标题3</Text>
-        <Text variant="body">正文文本</Text>
-        <Text variant="small">小号文本</Text>
-        <Text variant="body" color="secondary">次要文本</Text>
-        <Text variant="body" color="disabled">禁用文本</Text>
-      </Column>
-
+    <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <Text variant="h3" style={styles.subtitle}>卡片样式</Text>
-        <View style={[themeStyles.card, themeStyles.shadow]}>
-          <Text variant="h3">卡片标题</Text>
-          <Text variant="body" style={{ marginTop: 8 }}>
-            这是一个带有阴影的卡片示例。它使用了主题中定义的样式。
+        <Text variant="h2" style={{ marginBottom: layout.gutter }}>
+          文字排版
+        </Text>
+        <View style={styles.card}>
+          <Text variant="h1">一级标题</Text>
+          <Text variant="h2">二级标题</Text>
+          <Text variant="h3">三级标题</Text>
+          <Text variant="body">正文文本</Text>
+          <Text variant="small">小号文本</Text>
+          <Text variant="body" color="secondary">
+            次要文本
+          </Text>
+          <Text variant="body" color="disabled">
+            禁用文本
           </Text>
         </View>
       </View>
-    </Column>
+
+      <View style={styles.section}>
+        <Text variant="h2" style={{ marginBottom: layout.gutter }}>
+          输入框
+        </Text>
+        <View style={styles.card}>
+          <TextInput
+            label="基础输入框"
+            placeholder="请输入内容"
+            value={text}
+            onChangeText={setText}
+          />
+          <TextInput
+            label="带图标的输入框"
+            placeholder="请输入内容"
+            leftIcon="search"
+            rightIcon="clear"
+            onRightIconPress={() => setText("")}
+            value={text}
+            onChangeText={setText}
+          />
+          <TextInput
+            label="错误状态"
+            placeholder="请输入内容"
+            value={text}
+            onChangeText={setText}
+            error="这是一条错误提示"
+          />
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text variant="h2" style={{ marginBottom: layout.gutter }}>
+          按钮
+        </Text>
+        <View style={styles.card}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="主要按钮"
+              variant="primary"
+              style={styles.button}
+              onPress={() => handleModeChange(!theme.isDark)}
+            />
+            <Button
+              title="次要按钮"
+              variant="secondary"
+              style={styles.button}
+              onPress={() => handleThemeChange("blue")}
+            />
+            <Button title="文本按钮" variant="text" style={styles.button} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="带图标的按钮"
+              leftIcon="add"
+              variant="primary"
+              style={styles.button}
+            />
+            <Button
+              title="禁用状态"
+              variant="primary"
+              disabled
+              style={styles.button}
+            />
+            <Button
+              title="保存中..."
+              loading={true}
+              variant="primary"
+              style={styles.button}
+            />
+            <Button
+              key={`save-button-${theme.colorScheme}-${theme.isDark}`}
+              title={isLoading ? "保存中..." : "保存"}
+              loading={isLoading}
+              variant="primary"
+              style={styles.button}
+              onPress={handleSave}
+            />
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text variant="h2" style={{ marginBottom: layout.gutter }}>
+          列表
+        </Text>
+        <List>
+          <ListItem title="基础列表项" />
+          <ListItem
+            title="带图标的列表项"
+            subtitle="这是一条说明文本"
+            leftIcon="folder"
+          />
+          <ListItem
+            title="自定义右侧图标"
+            subtitle="点击查看详情"
+            rightIcon="arrow-forward"
+          />
+          <ListItem
+            title="最后一项"
+            subtitle="没有分割线"
+            showDivider={false}
+          />
+        </List>
+      </View>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 16,
-  },
-  title: {
-    marginBottom: 8,
-  },
-  description: {
-    marginBottom: 24,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  subtitle: {
-    marginBottom: 16,
-  },
-  button: {
-    marginVertical: 8,
-  },
-}); 

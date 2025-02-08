@@ -1,29 +1,39 @@
-export type ColorTheme = "default" | "blue" | "orange";
-export type DisplayMode = "light" | "dark" | "system";
-export type FontWeight = "400" | "500" | "600" | "normal" | "bold";
+// 主题模式
+export type ThemeMode = "light" | "dark";
 
-export interface Theme {
-  isDark: boolean;
-  colorTheme: ColorTheme;
-  colors: {
+// 主题色系
+export type ColorScheme =
+  | "default"
+  | "blue"
+  | "orange"
+  | "gray"
+  | "pink"
+  | "pastel";
+
+// 基础颜色主题接口
+export interface BaseTheme {
+  primary: string;
+  secondary: string;
+  background: string;
+  surface: string;
+  error: string;
+  success: string;
+  warning: string;
+  border: string;
+  hover: string;
+  text: {
     primary: string;
     secondary: string;
-    background: string;
-    surface: string;
+    disabled: string;
+    inverse: string;
     error: string;
-    success: string;
-    warning: string;
-    border: string;
-    hover: string;
-    shadowColor: string;
-    text: {
-      primary: string;
-      secondary: string;
-      disabled: string;
-      inverse: string;
-      error: string;
-    };
   };
+}
+
+// 完整主题接口
+export interface Theme extends BaseTheme {
+  isDark: boolean;
+  colorScheme: ColorScheme;
   typography: {
     sizes: {
       h1: number;
@@ -33,43 +43,18 @@ export interface Theme {
       small: number;
     };
     weights: {
-      h1: FontWeight;
-      h2: FontWeight;
-      h3: FontWeight;
-      body: FontWeight;
-      small: FontWeight;
+      h1: string;
+      h2: string;
+      h3: string;
+      body: string;
+      small: string;
     };
   };
-  shadows: {
-    small: {
-      shadowColor: string;
-      shadowOffset: {
-        width: number;
-        height: number;
-      };
-      shadowOpacity: number;
-      shadowRadius: number;
-      elevation: number;
-    };
-    medium: {
-      shadowColor: string;
-      shadowOffset: {
-        width: number;
-        height: number;
-      };
-      shadowOpacity: number;
-      shadowRadius: number;
-      elevation: number;
-    };
-    large: {
-      shadowColor: string;
-      shadowOffset: {
-        width: number;
-        height: number;
-      };
-      shadowOpacity: number;
-      shadowRadius: number;
-      elevation: number;
-    };
+  spacing: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
   };
 }

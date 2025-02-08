@@ -1,30 +1,37 @@
-import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
-import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import type { DrawerContentComponentProps } from '@react-navigation/drawer';
-import { Text } from './Text';
-import { useThemeContext } from '../themes/ThemeProvider';
-import { useAuthStore } from '../store/authStore';
-import { MaterialIcons } from '@expo/vector-icons';
-import { moderateScale, spacing, isTablet } from '../utils/responsive';
+import React from "react";
+import { View, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import type { DrawerContentComponentProps } from "@react-navigation/drawer";
+import { Text } from "./Text";
+import { useTheme } from "../themes/ThemeProvider";
+import { useAuthStore } from "../store/authStore";
+import { MaterialIcons } from "@expo/vector-icons";
+import { moderateScale, spacing, isTablet } from "../utils/responsive";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 // 使用本地头像图片
 const mockUserData = {
-  avatar: require('../../assets/logo.png'),
-  username: 'DemoUser',
-  email: 'demo@example.com',
+  avatar: require("../../assets/logo.png"),
+  username: "DemoUser",
+  email: "demo@example.com",
 };
 
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const { theme } = useThemeContext();
-  const logout = useAuthStore(state => state.logout);
+  const { theme } = useTheme();
+  const logout = useAuthStore((state) => state.logout);
 
   return (
     <View style={styles.container}>
-      <DrawerContentScrollView {...props} contentContainerStyle={styles.scrollContent}>
-        <View style={[styles.userSection, { backgroundColor: theme.colors.primary }]}>
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={[styles.userSection, { backgroundColor: theme.primary }]}>
           <View style={styles.avatarContainer}>
             <Image
               source={mockUserData.avatar}
@@ -41,15 +48,15 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      
-      <View style={[styles.logoutSection, { borderTopColor: theme.colors.border }]}>
+
+      <View style={[styles.logoutSection, { borderTopColor: theme.border }]}>
         <DrawerItem
           label="退出登录"
           onPress={logout}
           icon={({ color, size }) => (
-            <MaterialIcons name="logout" size={size} color={theme.colors.error} />
+            <MaterialIcons name="logout" size={size} color={theme.error} />
           )}
-          labelStyle={{ color: theme.colors.error }}
+          labelStyle={{ color: theme.error }}
         />
       </View>
     </View>
@@ -67,17 +74,17 @@ const styles = StyleSheet.create({
   userSection: {
     padding: 16,
     marginBottom: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   avatarContainer: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#FFFFFF',
-    padding: 2, 
+    backgroundColor: "#FFFFFF",
+    padding: 2,
     marginBottom: 12,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -97,10 +104,10 @@ const styles = StyleSheet.create({
   logoutSection: {
     borderTopWidth: 1,
     paddingVertical: 8,
-    marginTop: 'auto',  // 将退出按钮推到底部
+    marginTop: "auto", // 将退出按钮推到底部
   },
   divider: {
     height: 1,
     marginVertical: spacing.md,
   },
-}); 
+});

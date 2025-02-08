@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { Animated, StyleSheet, Dimensions } from 'react-native';
-import { Text } from '../Text';
-import { useThemeContext } from '../../themes/ThemeProvider';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect } from "react";
+import { Animated, StyleSheet, Dimensions } from "react-native";
+import { Text } from "../Text";
+import { useTheme } from "../../themes/ThemeProvider";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
-export type ToastPosition = 'top' | 'bottom';
+export type ToastType = "success" | "error" | "warning" | "info";
+export type ToastPosition = "top" | "bottom";
 
 export interface ToastProps {
   message: string;
@@ -19,27 +19,27 @@ export interface ToastProps {
 
 const getIconName = (type: ToastType) => {
   switch (type) {
-    case 'success':
-      return 'check-circle';
-    case 'error':
-      return 'error';
-    case 'warning':
-      return 'warning';
-    case 'info':
-      return 'info';
+    case "success":
+      return "check-circle";
+    case "error":
+      return "error";
+    case "warning":
+      return "warning";
+    case "info":
+      return "info";
   }
 };
 
-export const Toast = ({ 
-  message, 
-  type = 'info',
-  position = 'bottom',
+export const Toast = ({
+  message,
+  type = "info",
+  position = "bottom",
   duration = 2000,
-  onHide 
+  onHide,
 }: ToastProps) => {
-  const { theme } = useThemeContext();
+  const { theme } = useTheme();
   const opacity = new Animated.Value(0);
-  const translateY = new Animated.Value(position === 'top' ? -20 : 20);
+  const translateY = new Animated.Value(position === "top" ? -20 : 20);
 
   useEffect(() => {
     Animated.sequence([
@@ -63,7 +63,7 @@ export const Toast = ({
           useNativeDriver: true,
         }),
         Animated.timing(translateY, {
-          toValue: position === 'top' ? -20 : 20,
+          toValue: position === "top" ? -20 : 20,
           duration: 300,
           useNativeDriver: true,
         }),
@@ -73,32 +73,32 @@ export const Toast = ({
 
   const getBackgroundColor = () => {
     switch (type) {
-      case 'success':
-        return theme.colors.success;
-      case 'error':
-        return theme.colors.error;
-      case 'warning':
-        return '#FFA000';
-      case 'info':
-        return theme.colors.primary;
+      case "success":
+        return theme.success;
+      case "error":
+        return theme.error;
+      case "warning":
+        return "#FFA000";
+      case "info":
+        return theme.primary;
     }
   };
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
-        styles.container, 
+        styles.container,
         styles[position],
-        { 
+        {
           backgroundColor: getBackgroundColor(),
           opacity,
           transform: [{ translateY }],
-        }
+        },
       ]}
     >
-      <MaterialIcons 
-        name={getIconName(type)} 
-        size={24} 
+      <MaterialIcons
+        name={getIconName(type)}
+        size={24}
         color="#FFFFFF"
         style={styles.icon}
       />
@@ -111,15 +111,15 @@ export const Toast = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     left: 20,
     right: 20,
     padding: 16,
     borderRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
-}); 
+});

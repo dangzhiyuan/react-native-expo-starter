@@ -1,17 +1,17 @@
-import React from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  Pressable, 
-  PressableProps 
-} from 'react-native';
-import { Text } from './Text';
-import { useThemeContext } from '../themes/ThemeProvider';
-import { useResponsive } from '../utils/responsive';
-import { MaterialIcons } from '@expo/vector-icons';
+import React from "react";
+import {
+  View,
+  StyleSheet,
+  ViewStyle,
+  Pressable,
+  PressableProps,
+} from "react-native";
+import { Text } from "./Text";
+import { useTheme } from "../themes/ThemeProvider";
+import { useResponsive } from "../utils/responsive";
+import { MaterialIcons } from "@expo/vector-icons";
 
-interface ListItemProps extends Omit<PressableProps, 'style'> {
+interface ListItemProps extends Omit<PressableProps, "style"> {
   title: string;
   subtitle?: string;
   leftIcon?: keyof typeof MaterialIcons.glyphMap;
@@ -20,25 +20,25 @@ interface ListItemProps extends Omit<PressableProps, 'style'> {
   style?: ViewStyle;
 }
 
-export const ListItem = ({ 
+export const ListItem = ({
   title,
   subtitle,
   leftIcon,
-  rightIcon = 'chevron-right',
+  rightIcon = "chevron-right",
   showDivider = true,
   style,
   ...props
 }: ListItemProps) => {
-  const { theme } = useThemeContext();
+  const { theme } = useTheme();
   const { layout } = useResponsive();
 
   const styles = StyleSheet.create({
     item: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       paddingVertical: layout.gutter,
       paddingHorizontal: layout.padding,
-      backgroundColor: theme.colors.surface,
+      backgroundColor: theme.surface,
     },
     content: {
       flex: 1,
@@ -47,52 +47,40 @@ export const ListItem = ({
     },
     divider: {
       height: 1,
-      backgroundColor: theme.colors.border,
+      backgroundColor: theme.border,
     },
     icon: {
-      color: theme.colors.text.secondary,
+      color: theme.text.secondary,
     },
   });
 
   return (
     <>
-      <Pressable 
+      <Pressable
         style={({ pressed }) => [
           styles.item,
           pressed && {
-            backgroundColor: theme.colors.hover,
+            backgroundColor: theme.hover,
           },
           style,
         ]}
         {...props}
       >
         {leftIcon && (
-          <MaterialIcons
-            name={leftIcon}
-            size={24}
-            style={styles.icon}
-          />
+          <MaterialIcons name={leftIcon} size={24} style={styles.icon} />
         )}
-        
+
         <View style={styles.content}>
           <Text variant="body">{title}</Text>
           {subtitle && (
-            <Text 
-              variant="small" 
-              color="secondary"
-              style={{ marginTop: 4 }}
-            >
+            <Text variant="small" color="secondary" style={{ marginTop: 4 }}>
               {subtitle}
             </Text>
           )}
         </View>
 
         {rightIcon && (
-          <MaterialIcons
-            name={rightIcon}
-            size={24}
-            style={styles.icon}
-          />
+          <MaterialIcons name={rightIcon} size={24} style={styles.icon} />
         )}
       </Pressable>
       {showDivider && <View style={styles.divider} />}
@@ -106,14 +94,14 @@ interface ListProps {
 }
 
 export const List = ({ children, style }: ListProps) => {
-  const { theme } = useThemeContext();
-  
+  const { theme } = useTheme();
+
   const styles = StyleSheet.create({
     container: {
       borderRadius: 8,
-      overflow: 'hidden',
-      backgroundColor: theme.colors.surface,
-      shadowColor: theme.colors.text.primary,
+      overflow: "hidden",
+      backgroundColor: theme.surface,
+      shadowColor: theme.text.primary,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -124,9 +112,5 @@ export const List = ({ children, style }: ListProps) => {
     },
   });
 
-  return (
-    <View style={[styles.container, style]}>
-      {children}
-    </View>
-  );
-}; 
+  return <View style={[styles.container, style]}>{children}</View>;
+};

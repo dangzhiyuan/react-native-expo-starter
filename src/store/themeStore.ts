@@ -1,39 +1,39 @@
-import { create } from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors } from '../themes/colors';
-import type { SupportedTheme } from '../constants';
-
-const THEME_STORAGE_KEY = '@app_theme';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { ThemeMode, ColorScheme, Theme } from "../themes/types";
+import { createTheme } from "../themes/themeBuilder";
 
 interface ThemeState {
-  theme: SupportedTheme;
-  colors: typeof colors.default;
-  setTheme: (theme: SupportedTheme) => Promise<void>;
-  initializeTheme: () => Promise<void>;
+  mode: ThemeMode;
+  scheme: ColorScheme;
+  theme: Theme;
+  setThemeMode: (mode: ThemeMode) => Promise<void>;
+  setColorScheme: (scheme: ColorScheme) => Promise<void>;
 }
 
-export const useThemeStore = create<ThemeState>((set) => ({
-  theme: 'default',
-  colors: colors.default,
-  setTheme: async (theme) => {
-    try {
-      await AsyncStorage.setItem(THEME_STORAGE_KEY, theme);
-      set({ theme, colors: colors[theme] });
-    } catch (error) {
-      console.error('Failed to save theme:', error);
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      mode: "light",
+      scheme: "default",
+      theme: createTheme("light", "default"),
+      setThemeMode: async (mode) => {
+        set((state) => ({
+          mode,
+          theme: createTheme(mode, state.scheme),
+        }));
+      },
+      setColorScheme: async (scheme) => {
+        set((state) => ({
+          scheme,
+          theme: createTheme(state.mode, scheme),
+        }));
+      },
+    }),
+    {
+      name: "theme-storage",
+      storage: createJSONStorage(() => AsyncStorage),
     }
-  },
-  initializeTheme: async () => {
-    try {
-      const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
-      if (savedTheme && savedTheme in colors) {
-        set({ 
-          theme: savedTheme as SupportedTheme, 
-          colors: colors[savedTheme as SupportedTheme] 
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load theme:', error);
-    }
-  },
-})); 
+  )
+);

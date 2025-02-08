@@ -1,28 +1,38 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useThemeContext } from '../../themes/ThemeProvider';
+import React from "react";
+import { View, StyleSheet, ViewStyle, StyleProp } from "react-native";
+import { useTheme } from "../../themes/ThemeProvider";
+import { useResponsive } from "../../utils/responsive";
 
-interface Props {
+interface DividerProps {
   vertical?: boolean;
-  size?: number;
-  color?: string;
+  spacing?: number;
+  style?: StyleProp<ViewStyle>;
 }
 
-export const Divider = ({ 
-  vertical = false, 
-  size = 1,
-  color,
-}: Props) => {
-  const { theme } = useThemeContext();
+export const Divider = ({
+  vertical = false,
+  spacing = 0,
+  style,
+}: DividerProps) => {
+  const { theme } = useTheme();
+  const { layout } = useResponsive();
 
   const styles = StyleSheet.create({
     divider: {
-      backgroundColor: color ?? theme.colors.border,
+      backgroundColor: theme.border,
       ...(vertical
-        ? { width: size, height: '100%' }
-        : { height: size, width: '100%' }),
+        ? {
+            width: 1,
+            height: "100%",
+            marginHorizontal: spacing || layout.gutter,
+          }
+        : {
+            height: 1,
+            width: "100%",
+            marginVertical: spacing || layout.gutter,
+          }),
     },
   });
 
-  return <View style={styles.divider} />;
-}; 
+  return <View style={[styles.divider, style]} />;
+};

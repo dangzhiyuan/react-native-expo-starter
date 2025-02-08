@@ -1,30 +1,36 @@
-import React from 'react';
-import { Text as RNText, StyleSheet, TextStyle, StyleProp } from 'react-native';
-import { useThemeContext } from '../themes/ThemeProvider';
-import type { FontWeight } from '../themes/types';
+import React from "react";
+import { Text as RNText, StyleSheet, TextStyle, StyleProp } from "react-native";
+import { useTheme } from "../themes/ThemeProvider";
 
-interface TextProps {
+export interface TextProps {
   children: React.ReactNode;
-  variant?: 'h1' | 'h2' | 'h3' | 'body' | 'small';
-  color?: 'primary' | 'secondary' | 'disabled' | 'inverse' | 'error';
+  variant?: "h1" | "h2" | "h3" | "body" | "small";
+  color?: "primary" | "secondary" | "disabled" | "inverse" | "error";
   style?: StyleProp<TextStyle>;
 }
 
-export const Text = ({ 
-  children, 
-  variant = 'body',
-  color = 'primary',
+export const Text = ({
+  children,
+  variant = "body",
+  color = "primary",
   style,
 }: TextProps) => {
-  const { theme } = useThemeContext();
-  
+  const { theme } = useTheme();
+
+  console.log("Theme in Text:", {
+    typography: theme.typography,
+    text: theme.text,
+    variant,
+    color,
+  });
+
   const textStyle = StyleSheet.create({
     text: {
       fontSize: theme.typography.sizes[variant],
-      fontWeight: theme.typography.weights[variant],
-      color: theme.colors.text[color],
+      fontWeight: theme.typography.weights[variant] as TextStyle["fontWeight"],
+      color: theme.text[color],
     },
   });
 
   return <RNText style={[textStyle.text, style]}>{children}</RNText>;
-}; 
+};

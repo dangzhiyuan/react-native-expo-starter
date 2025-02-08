@@ -1,32 +1,46 @@
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, TextInput, Pressable } from 'react-native';
-import { Text } from '../../components/Text';
-import { useThemeContext } from '../../themes/ThemeProvider';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { validateUsername, validateEmail, validatePassword, validateConfirmPassword } from '../../utils/validation';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { AuthStackParamList } from '../../navigation/types';
-import Button from '../../components/Button';
+import React, { useState } from "react";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  Pressable,
+} from "react-native";
+import { Text } from "../../components/Text";
+import { useThemeContext } from "../../themes/ThemeProvider";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+import {
+  validateUsername,
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword,
+} from "../../utils/validation";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { AuthStackParamList } from "../../navigation/types";
+import Button from "../../components/Button";
 
-type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
+type RegisterScreenNavigationProp = NativeStackNavigationProp<
+  AuthStackParamList,
+  "Register"
+>;
 
 export const RegisterScreen = () => {
-  const { styles: themeStyles, theme } = useThemeContext();
+  const { theme } = useThemeContext();
   const navigation = useNavigation<RegisterScreenNavigationProp>();
-  
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [touched, setTouched] = useState({
     username: false,
@@ -42,10 +56,10 @@ export const RegisterScreen = () => {
       password: validatePassword(password),
       confirmPassword: validateConfirmPassword(password, confirmPassword),
     };
-    
+
     setErrors(newErrors);
-    
-    return !Object.values(newErrors).some(error => error);
+
+    return !Object.values(newErrors).some((error) => error);
   };
 
   const handleFieldChange = (field: string, value: string) => {
@@ -59,22 +73,22 @@ export const RegisterScreen = () => {
     setters[field](value);
 
     if (touched[field as keyof typeof touched]) {
-      let error = '';
+      let error = "";
       switch (field) {
-        case 'username':
+        case "username":
           error = validateUsername(value);
           break;
-        case 'email':
+        case "email":
           error = validateEmail(value);
           break;
-        case 'password':
+        case "password":
           error = validatePassword(value);
           break;
-        case 'confirmPassword':
+        case "confirmPassword":
           error = validateConfirmPassword(password, value);
           break;
       }
-      setErrors(prev => ({ ...prev, [field]: error }));
+      setErrors((prev) => ({ ...prev, [field]: error }));
     }
   };
 
@@ -83,47 +97,57 @@ export const RegisterScreen = () => {
       return;
     }
 
-    setError('');
+    setError("");
     setLoading(true);
     try {
       // 这里添加注册逻辑
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigation.navigate('Login');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      navigation.navigate("Login");
     } catch (err) {
-      setError('注册失败，请重试');
+      setError("注册失败，请重试");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View style={[themeStyles.card, themeStyles.shadow, styles.registerCard]}>
-        <Text variant="h1" style={styles.title}>创建账号</Text>
+      <View
+        style={[styles.card, styles.shadow, { backgroundColor: theme.surface }]}
+      >
+        <Text variant="h1" style={styles.title}>
+          创建账号
+        </Text>
         <Text variant="body" color="secondary" style={styles.subtitle}>
           请填写以下信息完成注册
         </Text>
 
         <View style={styles.inputContainer}>
-          <MaterialIcons 
-            name="person-outline" 
-            size={20} 
-            color={theme.colors.text.secondary}
+          <MaterialIcons
+            name="person-outline"
+            size={20}
+            color={theme.text.secondary}
             style={styles.inputIcon}
           />
           <TextInput
             style={[
               styles.input,
-              { borderColor: errors.username && touched.username ? theme.colors.error : theme.colors.border }
+              {
+                borderColor:
+                  errors.username && touched.username
+                    ? theme.error
+                    : theme.border,
+                color: theme.text.primary,
+              },
             ]}
             placeholder="用户名"
-            placeholderTextColor={theme.colors.text.disabled}
+            placeholderTextColor={theme.text.disabled}
             value={username}
-            onChangeText={(text) => handleFieldChange('username', text)}
-            onBlur={() => setTouched(prev => ({ ...prev, username: true }))}
+            onChangeText={(text) => handleFieldChange("username", text)}
+            onBlur={() => setTouched((prev) => ({ ...prev, username: true }))}
             autoCapitalize="none"
           />
         </View>
@@ -134,22 +158,26 @@ export const RegisterScreen = () => {
         ) : null}
 
         <View style={styles.inputContainer}>
-          <MaterialIcons 
-            name="email" 
-            size={20} 
-            color={theme.colors.text.secondary}
+          <MaterialIcons
+            name="email"
+            size={20}
+            color={theme.text.secondary}
             style={styles.inputIcon}
           />
           <TextInput
             style={[
               styles.input,
-              { borderColor: errors.email && touched.email ? theme.colors.error : theme.colors.border }
+              {
+                borderColor:
+                  errors.email && touched.email ? theme.error : theme.border,
+                color: theme.text.primary,
+              },
             ]}
             placeholder="电子邮箱"
-            placeholderTextColor={theme.colors.text.disabled}
+            placeholderTextColor={theme.text.disabled}
             value={email}
-            onChangeText={(text) => handleFieldChange('email', text)}
-            onBlur={() => setTouched(prev => ({ ...prev, email: true }))}
+            onChangeText={(text) => handleFieldChange("email", text)}
+            onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
             autoCapitalize="none"
             keyboardType="email-address"
           />
@@ -161,32 +189,38 @@ export const RegisterScreen = () => {
         ) : null}
 
         <View style={styles.inputContainer}>
-          <MaterialIcons 
-            name="lock-outline" 
-            size={20} 
-            color={theme.colors.text.secondary}
+          <MaterialIcons
+            name="lock-outline"
+            size={20}
+            color={theme.text.secondary}
             style={styles.inputIcon}
           />
           <TextInput
             style={[
               styles.input,
-              { borderColor: errors.password && touched.password ? theme.colors.error : theme.colors.border }
+              {
+                borderColor:
+                  errors.password && touched.password
+                    ? theme.error
+                    : theme.border,
+                color: theme.text.primary,
+              },
             ]}
             placeholder="密码"
-            placeholderTextColor={theme.colors.text.disabled}
+            placeholderTextColor={theme.text.disabled}
             value={password}
-            onChangeText={(text) => handleFieldChange('password', text)}
-            onBlur={() => setTouched(prev => ({ ...prev, password: true }))}
+            onChangeText={(text) => handleFieldChange("password", text)}
+            onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
             secureTextEntry={!showPassword}
           />
-          <Pressable 
+          <Pressable
             onPress={() => setShowPassword(!showPassword)}
             style={styles.passwordToggle}
           >
-            <MaterialIcons 
+            <MaterialIcons
               name={showPassword ? "visibility" : "visibility-off"}
               size={20}
-              color={theme.colors.text.secondary}
+              color={theme.text.secondary}
             />
           </Pressable>
         </View>
@@ -197,22 +231,30 @@ export const RegisterScreen = () => {
         ) : null}
 
         <View style={styles.inputContainer}>
-          <MaterialIcons 
-            name="lock-outline" 
-            size={20} 
-            color={theme.colors.text.secondary}
+          <MaterialIcons
+            name="lock-outline"
+            size={20}
+            color={theme.text.secondary}
             style={styles.inputIcon}
           />
           <TextInput
             style={[
               styles.input,
-              { borderColor: errors.confirmPassword && touched.confirmPassword ? theme.colors.error : theme.colors.border }
+              {
+                borderColor:
+                  errors.confirmPassword && touched.confirmPassword
+                    ? theme.error
+                    : theme.border,
+                color: theme.text.primary,
+              },
             ]}
             placeholder="确认密码"
-            placeholderTextColor={theme.colors.text.disabled}
+            placeholderTextColor={theme.text.disabled}
             value={confirmPassword}
-            onChangeText={(text) => handleFieldChange('confirmPassword', text)}
-            onBlur={() => setTouched(prev => ({ ...prev, confirmPassword: true }))}
+            onChangeText={(text) => handleFieldChange("confirmPassword", text)}
+            onBlur={() =>
+              setTouched((prev) => ({ ...prev, confirmPassword: true }))
+            }
             secureTextEntry={!showPassword}
           />
         </View>
@@ -236,12 +278,12 @@ export const RegisterScreen = () => {
           onPress={handleRegister}
         />
 
-        <Pressable 
-          onPress={() => navigation.navigate('Login')}
+        <Pressable
+          onPress={() => navigation.navigate("Login")}
           style={styles.loginLink}
         >
           <Text variant="small" color="secondary">
-            已有账号？ 
+            已有账号？
           </Text>
           <Text variant="small" color="primary">
             立即登录
@@ -258,27 +300,38 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 16,
   },
-  registerCard: {
+  card: {
     padding: 24,
+    borderRadius: 8,
+  },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 32,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   inputIcon: {
-    position: 'absolute',
+    position: "absolute",
     left: 16,
     zIndex: 1,
   },
@@ -290,21 +343,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
   },
   passwordToggle: {
-    position: 'absolute',
+    position: "absolute",
     right: 16,
     padding: 4,
   },
   error: {
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   registerButton: {
     marginBottom: 16,
   },
   loginLink: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 4,
   },
   fieldError: {
@@ -312,4 +365,4 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 4,
   },
-}); 
+});
