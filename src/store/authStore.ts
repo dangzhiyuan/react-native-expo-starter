@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from "zustand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AUTH_TOKEN_KEY = '@auth_token';
+const AUTH_TOKEN_KEY = "@auth_token";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -10,6 +10,8 @@ interface AuthState {
     id: string;
     username: string;
     email: string;
+    avatar: string;
+    name: string;
   } | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -24,23 +26,25 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (username: string, password: string) => {
     try {
       // 添加2秒延迟
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // 模拟API调用
-      const token = 'mock_token';
+      const token = "mock_token";
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
-      
+
       set({
         isAuthenticated: true,
         token,
         user: {
-          id: '1',
+          id: "1",
           username,
           email: `${username}@example.com`,
+          name: username,
+          avatar: "",
         },
       });
     } catch (error) {
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
   },
 
@@ -53,7 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         user: null,
       });
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   },
 
@@ -66,14 +70,16 @@ export const useAuthStore = create<AuthState>((set) => ({
           isAuthenticated: true,
           token,
           user: {
-            id: '1',
-            username: 'demo',
-            email: 'demo@example.com',
+            id: "1",
+            username: "demo",
+            email: "demo@example.com",
+            name: "Demo User",
+            avatar: "",
           },
         });
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error("Auth check failed:", error);
     }
   },
-})); 
+}));

@@ -1,22 +1,25 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useDrawerStatus } from "@react-navigation/drawer";
 import { useTheme } from "../themes/ThemeProvider";
 
-interface DrawerToggleButtonProps {
-  tintColor?: string;
-}
-
-export const DrawerToggleButton = ({ tintColor }: DrawerToggleButtonProps) => {
+export const DrawerToggleButton = () => {
+  const { theme } = useTheme();
   const navigation = useNavigation();
+  const isDrawerOpen = useDrawerStatus() === "open";
 
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
     >
-      <MaterialIcons name="menu" size={24} color={tintColor} />
+      <MaterialIcons
+        name={isDrawerOpen ? "close" : "menu"}
+        size={24}
+        color={theme.text.inverse}
+      />
     </TouchableOpacity>
   );
 };
@@ -24,5 +27,6 @@ export const DrawerToggleButton = ({ tintColor }: DrawerToggleButtonProps) => {
 const styles = StyleSheet.create({
   button: {
     marginRight: 16,
+    padding: 8,
   },
 });

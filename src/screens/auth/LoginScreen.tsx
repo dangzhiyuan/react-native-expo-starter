@@ -19,6 +19,7 @@ import { Toast } from "../../components/Toast";
 import { moderateScale, isTablet, spacing } from "../../utils/responsive";
 import { Card } from "../../components/layout/Card";
 import Background from "../../components/layout/Background";
+import { useTranslation } from "react-i18next";
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,
@@ -26,6 +27,7 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 export const LoginScreen = () => {
+  const { t } = useTranslation();
   const { theme } = useThemeContext();
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const login = useAuthStore((state) => state.login);
@@ -70,16 +72,21 @@ export const LoginScreen = () => {
   const handleLogin = async () => {
     if (!validateForm()) return;
 
-    setLoading(true);
-    setError("");
+    if (!username) {
+      setError(t("auth.usernameRequired"));
+      return;
+    }
+    if (!password) {
+      setError(t("auth.passwordRequired"));
+      return;
+    }
 
     try {
-      // 添加2秒延迟
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      setLoading(true);
+      setError("");
       await login(username, password);
-    } catch (err) {
-      setError("登录失败，请重试");
+    } catch (error) {
+      setError(t("auth.loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -96,37 +103,27 @@ export const LoginScreen = () => {
         <Background source={require("../../../assets/images/background.png")}>
           <Card variant="elevated">
             <Text variant="h1" style={styles.title}>
-              欢迎回来
+              {t("auth.loginTitle")}
             </Text>
             <Text variant="body" color="secondary" style={styles.subtitle}>
-              请登录您的账号
+              {t("auth.loginSubtitle")}
             </Text>
 
             <View style={styles.inputContainer}>
               <MaterialIcons
-                name="person-outline"
-                size={20}
+                name="person"
+                size={24}
                 color={theme.text.secondary}
                 style={styles.inputIcon}
               />
               <TextInput
-                style={[
-                  styles.input,
-                  {
-                    borderColor:
-                      usernameError && touched.username
-                        ? theme.error
-                        : theme.border,
-                  },
-                ]}
-                placeholder="用户名"
-                placeholderTextColor={theme.text.disabled}
+                style={[styles.input, { borderColor: theme.border }]}
+                placeholder={t("auth.username")}
                 value={username}
                 onChangeText={handleUsernameChange}
                 onBlur={() =>
                   setTouched((prev) => ({ ...prev, username: true }))
                 }
-                autoCapitalize="none"
               />
             </View>
             {touched.username && usernameError ? (
@@ -137,37 +134,28 @@ export const LoginScreen = () => {
 
             <View style={styles.inputContainer}>
               <MaterialIcons
-                name="lock-outline"
-                size={20}
+                name="lock"
+                size={24}
                 color={theme.text.secondary}
                 style={styles.inputIcon}
               />
               <TextInput
-                style={[
-                  styles.input,
-                  {
-                    borderColor:
-                      passwordError && touched.password
-                        ? theme.error
-                        : theme.border,
-                  },
-                ]}
-                placeholder="密码"
-                placeholderTextColor={theme.text.disabled}
+                style={[styles.input, { borderColor: theme.border }]}
+                placeholder={t("auth.password")}
+                secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={handlePasswordChange}
                 onBlur={() =>
                   setTouched((prev) => ({ ...prev, password: true }))
                 }
-                secureTextEntry={!showPassword}
               />
               <Pressable
-                onPress={() => setShowPassword(!showPassword)}
                 style={styles.passwordToggle}
+                onPress={() => setShowPassword(!showPassword)}
               >
                 <MaterialIcons
                   name={showPassword ? "visibility" : "visibility-off"}
-                  size={20}
+                  size={24}
                   color={theme.text.secondary}
                 />
               </Pressable>
@@ -179,49 +167,29 @@ export const LoginScreen = () => {
             ) : null}
 
             {error ? (
-              <Text variant="small" style={styles.error} color="error">
+              <Text variant="small" color="error" style={styles.error}>
                 {error}
               </Text>
             ) : null}
 
             <Button
-              title="登录"
-              variant="primary"
+              title={t("auth.login")}
+              onPress={handleLogin}
               loading={loading}
               style={styles.loginButton}
-              onPress={handleLogin}
             />
 
-            <Pressable
-              onPress={() => setShowToast(true)}
-              style={styles.forgotPassword}
-            >
-              <Text variant="small" color="secondary">
-                忘记密码？
+            <View style={styles.registerLink}>
+              <Text variant="body" color="secondary">
+                {t("auth.noAccount")}
               </Text>
-            </Pressable>
-
-            <View style={styles.divider}>
-              <View
-                style={[styles.dividerLine, { backgroundColor: theme.border }]}
-              />
-              <Text
-                variant="small"
-                color="secondary"
-                style={styles.dividerText}
-              >
-                或者
-              </Text>
-              <View
-                style={[styles.dividerLine, { backgroundColor: theme.border }]}
+              <Button
+                title={t("auth.createAccount")}
+                variant="text"
+                onPress={() => navigation.navigate("Register")}
+                loading={loading}
               />
             </View>
-
-            <Button
-              title="创建新账号"
-              variant="outline"
-              onPress={() => navigation.navigate("Register")}
-            />
           </Card>
         </Background>
       </ScrollView>
@@ -279,27 +247,11 @@ const styles = StyleSheet.create({
   loginButton: {
     marginBottom: 16,
   },
-  forgotPassword: {
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  divider: {
+  registerLink: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-  },
-  dividerText: {
-    marginHorizontal: 16,
-  },
-  registerButton: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 0,
-    elevation: 0,
-    shadowOpacity: 0,
   },
   fieldError: {
     marginTop: -8,

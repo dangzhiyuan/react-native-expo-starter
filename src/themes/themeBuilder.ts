@@ -6,6 +6,7 @@ import { lightOrange, darkOrange } from "./colors/orange";
 import { lightGray, darkGray } from "./colors/gray";
 import { lightPink, darkPink } from "./colors/pink";
 import { lightPastel, darkPastel } from "./colors/pastel";
+import { lightEtrain, darkEtrain } from "./colors/etrain";
 
 // 主题映射
 const themes: Record<ColorScheme, Record<ThemeMode, typeof lightDefault>> = {
@@ -32,6 +33,10 @@ const themes: Record<ColorScheme, Record<ThemeMode, typeof lightDefault>> = {
   pastel: {
     light: lightPastel,
     dark: darkPastel,
+  },
+  etrain: {
+    light: lightEtrain,
+    dark: darkEtrain,
   },
 };
 

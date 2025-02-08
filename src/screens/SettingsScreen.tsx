@@ -1,108 +1,253 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { ScreenContainer } from "../components/layout/ScreenContainer";
-import { Container } from "../components/layout/Container";
-import { Card } from "../components/layout/Card";
-import { Column } from "../components/layout/Column";
-import { Row } from "../components/layout/Row";
-import { Divider } from "../components/layout/Divider";
+import React from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "../components/Text";
 import Button from "../components/Button";
 import { useTheme } from "../themes/ThemeProvider";
-import type { ThemeMode, ColorScheme } from "../themes/types";
+import { useUIStore } from "../store/uiStore";
+import { useLanguageStore } from "../store/languageStore";
 import { useResponsive } from "../utils/responsive";
+import { useTranslation } from "react-i18next";
+import { Card } from "../components/layout/Card";
+import { ScreenContainer } from "../components/layout/ScreenContainer";
+import { Container } from "../components/layout/Container";
+import type { Language } from "../i18n";
+import type { ThemeMode, ColorScheme } from "../themes/types";
 
 export const SettingsScreen = () => {
+  const { t } = useTranslation();
   const { theme, setThemeMode, setColorScheme } = useTheme();
   const { layout, device } = useResponsive();
-  const [isChanging, setIsChanging] = useState(false);
+  const { isHeaderVisible, toggleHeader } = useUIStore();
+  const { currentLanguage, setLanguage } = useLanguageStore();
 
-  const handleDisplayModeChange = async (mode: ThemeMode) => {
-    try {
-      setIsChanging(true);
-      await setThemeMode(mode);
-    } catch (error) {
-      console.error("Theme change error:", error);
-    } finally {
-      setIsChanging(false);
-    }
-  };
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    content: {
+      padding: layout.padding,
+    },
+    section: {
+      marginBottom: layout.gutter * 2,
+    },
+    sectionTitle: {
+      marginBottom: layout.gutter,
+    },
+    sectionDescription: {
+      marginBottom: layout.gutter * 1.5,
+      opacity: 0.7,
+    },
+    optionCard: {
+      marginBottom: layout.gutter,
+      padding: layout.padding,
+      borderRadius: 12,
+    },
+    optionTitle: {
+      marginBottom: layout.gutter / 2,
+    },
+    optionDescription: {
+      marginBottom: layout.gutter,
+      opacity: 0.7,
+    },
+  });
 
-  const handleColorThemeChange = async (scheme: ColorScheme) => {
-    try {
-      setIsChanging(true);
-      await setColorScheme(scheme);
-    } catch (error) {
-      console.error("Theme change error:", error);
-    } finally {
-      setIsChanging(false);
-    }
-  };
-
-  const displayModeOptions: Array<{ label: string; value: ThemeMode }> = [
-    { label: "浅色模式", value: "light" },
-    { label: "深色模式", value: "dark" },
-  ];
-
-  const colorThemeOptions: Array<{ label: string; value: ColorScheme }> = [
-    { label: "默认主题", value: "default" },
-    { label: "蓝色主题", value: "blue" },
-    { label: "橙色主题", value: "orange" },
-    { label: "灰色主题", value: "gray" },
-    { label: "粉色主题", value: "pink" },
-    { label: "小清新主题", value: "pastel" },
+  const languageOptions: Array<{
+    label: string;
+    value: Language;
+    description: string;
+  }> = [
+    {
+      label: t("settings.language.zh"),
+      value: "zh",
+      description: t("settings.language.zhDescription"),
+    },
+    {
+      label: t("settings.language.en"),
+      value: "en",
+      description: t("settings.language.enDescription"),
+    },
   ];
 
   return (
     <ScreenContainer>
       <Container maxWidth={device === "phone" ? "100%" : 600}>
-        <Column spacing={layout.gutter}>
-          <Card variant="elevated">
-            <Text variant="h2">显示模式</Text>
-            <Column spacing={layout.gutter / 2}>
-              {displayModeOptions.map((option) => (
-                <Button
-                  key={option.value}
-                  title={option.label}
-                  variant={
-                    theme.isDark === (option.value === "dark")
-                      ? "primary"
-                      : "outline"
-                  }
-                  loading={isChanging}
-                  onPress={() => handleDisplayModeChange(option.value)}
-                />
-              ))}
-            </Column>
-          </Card>
-
-          <Card variant="elevated">
-            <Text variant="h2">主题颜色</Text>
-            <Column spacing={layout.gutter / 2}>
-              {colorThemeOptions.map((option) => (
-                <Button
-                  key={option.value}
-                  title={option.label}
-                  variant={
-                    theme.colorScheme === option.value ? "primary" : "outline"
-                  }
-                  loading={isChanging}
-                  onPress={() => handleColorThemeChange(option.value)}
-                />
-              ))}
-            </Column>
-          </Card>
-
-          <Card variant="elevated">
-            <Text variant="h2">关于</Text>
-            <Column spacing={layout.gutter / 2}>
-              <Text variant="body">版本: 1.0.0</Text>
-              <Text variant="small" color="secondary">
-                React Native 主题化启动模板
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* 显示设置 */}
+          <View style={styles.section}>
+            <Text variant="h2" style={styles.sectionTitle}>
+              {t("settings.display.title")}
+            </Text>
+            <Text
+              variant="body"
+              color="secondary"
+              style={styles.sectionDescription}
+            >
+              {t("settings.display.description")}
+            </Text>
+            <Card variant="elevated" style={styles.optionCard}>
+              <Text variant="h3" style={styles.optionTitle}>
+                {t("settings.header.title")}
               </Text>
-            </Column>
-          </Card>
-        </Column>
+              <Text
+                variant="body"
+                color="secondary"
+                style={styles.optionDescription}
+              >
+                {t("settings.header.description")}
+              </Text>
+              <Button
+                title={
+                  isHeaderVisible
+                    ? t("settings.header.hide")
+                    : t("settings.header.show")
+                }
+                variant={isHeaderVisible ? "outline" : "primary"}
+                onPress={toggleHeader}
+                leftIcon={isHeaderVisible ? "visibility-off" : "visibility"}
+              />
+            </Card>
+          </View>
+
+          {/* 语言设置 */}
+          <View style={styles.section}>
+            <Text variant="h2" style={styles.sectionTitle}>
+              {t("settings.language.title")}
+            </Text>
+            <Text
+              variant="body"
+              color="secondary"
+              style={styles.sectionDescription}
+            >
+              {t("settings.language.description")}
+            </Text>
+            {languageOptions.map((option) => (
+              <Card
+                key={option.value}
+                variant="elevated"
+                style={styles.optionCard}
+              >
+                <Text variant="h3" style={styles.optionTitle}>
+                  {option.label}
+                </Text>
+                <Text
+                  variant="body"
+                  color="secondary"
+                  style={styles.optionDescription}
+                >
+                  {option.description}
+                </Text>
+                <Button
+                  title={
+                    currentLanguage === option.value
+                      ? t("settings.language.current")
+                      : t("settings.language.select")
+                  }
+                  variant={
+                    currentLanguage === option.value ? "outline" : "primary"
+                  }
+                  onPress={() => setLanguage(option.value)}
+                  leftIcon={
+                    currentLanguage === option.value ? "check" : "language"
+                  }
+                />
+              </Card>
+            ))}
+          </View>
+
+          {/* 主题设置 */}
+          <View style={styles.section}>
+            <Text variant="h2" style={styles.sectionTitle}>
+              {t("settings.theme.title")}
+            </Text>
+            <Text
+              variant="body"
+              color="secondary"
+              style={styles.sectionDescription}
+            >
+              {t("settings.theme.description")}
+            </Text>
+
+            {/* 显示模式 */}
+            <Text
+              variant="h3"
+              style={[styles.sectionTitle, { marginTop: layout.gutter }]}
+            >
+              {t("settings.theme.displayMode")}
+            </Text>
+            {["light", "dark"].map((mode) => (
+              <Card key={mode} variant="elevated" style={styles.optionCard}>
+                <Text variant="h3" style={styles.optionTitle}>
+                  {t(`settings.theme.${mode}`)}
+                </Text>
+                <Text
+                  variant="body"
+                  color="secondary"
+                  style={styles.optionDescription}
+                >
+                  {t(`settings.theme.${mode}Description`)}
+                </Text>
+                <Button
+                  title={
+                    theme.isDark === (mode === "dark")
+                      ? t("settings.theme.current")
+                      : t("settings.theme.select")
+                  }
+                  variant={
+                    theme.isDark === (mode === "dark") ? "outline" : "primary"
+                  }
+                  onPress={() => setThemeMode(mode as ThemeMode)}
+                  leftIcon={
+                    theme.isDark === (mode === "dark") ? "check" : "palette"
+                  }
+                />
+              </Card>
+            ))}
+
+            {/* 主题颜色 */}
+            <Text
+              variant="h3"
+              style={[styles.sectionTitle, { marginTop: layout.gutter * 2 }]}
+            >
+              {t("settings.theme.colorScheme")}
+            </Text>
+            {[
+              "default",
+              "blue",
+              "orange",
+              "gray",
+              "pink",
+              "pastel",
+              "etrain",
+            ].map((scheme) => (
+              <Card key={scheme} variant="elevated" style={styles.optionCard}>
+                <Text variant="h3" style={styles.optionTitle}>
+                  {t(`settings.theme.${scheme}`)}
+                </Text>
+                <Text
+                  variant="body"
+                  color="secondary"
+                  style={styles.optionDescription}
+                >
+                  {t(`settings.theme.${scheme}Description`)}
+                </Text>
+                <Button
+                  title={
+                    theme.colorScheme === scheme
+                      ? t("settings.theme.current")
+                      : t("settings.theme.select")
+                  }
+                  variant={theme.colorScheme === scheme ? "outline" : "primary"}
+                  onPress={() => setColorScheme(scheme as ColorScheme)}
+                  leftIcon={theme.colorScheme === scheme ? "check" : "palette"}
+                />
+              </Card>
+            ))}
+          </View>
+        </ScrollView>
       </Container>
     </ScreenContainer>
   );

@@ -19,6 +19,8 @@ import {
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AuthStackParamList } from "../../navigation/types";
 import Button from "../../components/Button";
+import Background from "../../components/layout/Background";
+import { t } from "i18next";
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,
@@ -115,181 +117,189 @@ export const RegisterScreen = () => {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View
-        style={[styles.card, styles.shadow, { backgroundColor: theme.surface }]}
-      >
-        <Text variant="h1" style={styles.title}>
-          创建账号
-        </Text>
-        <Text variant="body" color="secondary" style={styles.subtitle}>
-          请填写以下信息完成注册
-        </Text>
-
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="person-outline"
-            size={20}
-            color={theme.text.secondary}
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor:
-                  errors.username && touched.username
-                    ? theme.error
-                    : theme.border,
-                color: theme.text.primary,
-              },
-            ]}
-            placeholder="用户名"
-            placeholderTextColor={theme.text.disabled}
-            value={username}
-            onChangeText={(text) => handleFieldChange("username", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, username: true }))}
-            autoCapitalize="none"
-          />
-        </View>
-        {touched.username && errors.username ? (
-          <Text variant="small" color="error" style={styles.fieldError}>
-            {errors.username}
+      <Background source={require("../../../assets/images/background.png")}>
+        <View
+          style={[
+            styles.card,
+            styles.shadow,
+            { backgroundColor: theme.surface },
+          ]}
+        >
+          <Text variant="h1" style={styles.title}>
+            创建账号
           </Text>
-        ) : null}
-
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="email"
-            size={20}
-            color={theme.text.secondary}
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor:
-                  errors.email && touched.email ? theme.error : theme.border,
-                color: theme.text.primary,
-              },
-            ]}
-            placeholder="电子邮箱"
-            placeholderTextColor={theme.text.disabled}
-            value={email}
-            onChangeText={(text) => handleFieldChange("email", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
-        </View>
-        {touched.email && errors.email ? (
-          <Text variant="small" color="error" style={styles.fieldError}>
-            {errors.email}
+          <Text variant="body" color="secondary" style={styles.subtitle}>
+            请填写以下信息完成注册
           </Text>
-        ) : null}
 
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="lock-outline"
-            size={20}
-            color={theme.text.secondary}
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor:
-                  errors.password && touched.password
-                    ? theme.error
-                    : theme.border,
-                color: theme.text.primary,
-              },
-            ]}
-            placeholder="密码"
-            placeholderTextColor={theme.text.disabled}
-            value={password}
-            onChangeText={(text) => handleFieldChange("password", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
-            secureTextEntry={!showPassword}
-          />
-          <Pressable
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.passwordToggle}
-          >
+          <View style={styles.inputContainer}>
             <MaterialIcons
-              name={showPassword ? "visibility" : "visibility-off"}
+              name="person-outline"
               size={20}
               color={theme.text.secondary}
+              style={styles.inputIcon}
             />
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor:
+                    errors.username && touched.username
+                      ? theme.error
+                      : theme.border,
+                  color: theme.text.primary,
+                },
+              ]}
+              placeholder="用户名"
+              placeholderTextColor={theme.text.disabled}
+              value={username}
+              onChangeText={(text) => handleFieldChange("username", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, username: true }))}
+              autoCapitalize="none"
+            />
+          </View>
+          {touched.username && errors.username ? (
+            <Text variant="small" color="error" style={styles.fieldError}>
+              {errors.username}
+            </Text>
+          ) : null}
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons
+              name="email"
+              size={20}
+              color={theme.text.secondary}
+              style={styles.inputIcon}
+            />
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor:
+                    errors.email && touched.email ? theme.error : theme.border,
+                  color: theme.text.primary,
+                },
+              ]}
+              placeholder="电子邮箱"
+              placeholderTextColor={theme.text.disabled}
+              value={email}
+              onChangeText={(text) => handleFieldChange("email", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+          </View>
+          {touched.email && errors.email ? (
+            <Text variant="small" color="error" style={styles.fieldError}>
+              {errors.email}
+            </Text>
+          ) : null}
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons
+              name="lock-outline"
+              size={20}
+              color={theme.text.secondary}
+              style={styles.inputIcon}
+            />
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor:
+                    errors.password && touched.password
+                      ? theme.error
+                      : theme.border,
+                  color: theme.text.primary,
+                },
+              ]}
+              placeholder="密码"
+              placeholderTextColor={theme.text.disabled}
+              value={password}
+              onChangeText={(text) => handleFieldChange("password", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
+              secureTextEntry={!showPassword}
+            />
+            <Pressable
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.passwordToggle}
+            >
+              <MaterialIcons
+                name={showPassword ? "visibility" : "visibility-off"}
+                size={20}
+                color={theme.text.secondary}
+              />
+            </Pressable>
+          </View>
+          {touched.password && errors.password ? (
+            <Text variant="small" color="error" style={styles.fieldError}>
+              {errors.password}
+            </Text>
+          ) : null}
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons
+              name="lock-outline"
+              size={20}
+              color={theme.text.secondary}
+              style={styles.inputIcon}
+            />
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  borderColor:
+                    errors.confirmPassword && touched.confirmPassword
+                      ? theme.error
+                      : theme.border,
+                  color: theme.text.primary,
+                },
+              ]}
+              placeholder="确认密码"
+              placeholderTextColor={theme.text.disabled}
+              value={confirmPassword}
+              onChangeText={(text) =>
+                handleFieldChange("confirmPassword", text)
+              }
+              onBlur={() =>
+                setTouched((prev) => ({ ...prev, confirmPassword: true }))
+              }
+              secureTextEntry={!showPassword}
+            />
+          </View>
+          {touched.confirmPassword && errors.confirmPassword ? (
+            <Text variant="small" color="error" style={styles.fieldError}>
+              {errors.confirmPassword}
+            </Text>
+          ) : null}
+
+          {error ? (
+            <Text variant="small" style={styles.error} color="error">
+              {error}
+            </Text>
+          ) : null}
+
+          <Button
+            title="注册"
+            variant="primary"
+            loading={loading}
+            style={styles.registerButton}
+            onPress={handleRegister}
+          />
+
+          <Pressable
+            onPress={() => navigation.navigate("Login")}
+            style={styles.loginLink}
+          >
+            <Text variant="small" color="secondary">
+              已有账号？
+            </Text>
+            <Text variant="small" color="primary">
+              立即登录
+            </Text>
           </Pressable>
         </View>
-        {touched.password && errors.password ? (
-          <Text variant="small" color="error" style={styles.fieldError}>
-            {errors.password}
-          </Text>
-        ) : null}
-
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="lock-outline"
-            size={20}
-            color={theme.text.secondary}
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor:
-                  errors.confirmPassword && touched.confirmPassword
-                    ? theme.error
-                    : theme.border,
-                color: theme.text.primary,
-              },
-            ]}
-            placeholder="确认密码"
-            placeholderTextColor={theme.text.disabled}
-            value={confirmPassword}
-            onChangeText={(text) => handleFieldChange("confirmPassword", text)}
-            onBlur={() =>
-              setTouched((prev) => ({ ...prev, confirmPassword: true }))
-            }
-            secureTextEntry={!showPassword}
-          />
-        </View>
-        {touched.confirmPassword && errors.confirmPassword ? (
-          <Text variant="small" color="error" style={styles.fieldError}>
-            {errors.confirmPassword}
-          </Text>
-        ) : null}
-
-        {error ? (
-          <Text variant="small" style={styles.error} color="error">
-            {error}
-          </Text>
-        ) : null}
-
-        <Button
-          title="注册"
-          variant="primary"
-          loading={loading}
-          style={styles.registerButton}
-          onPress={handleRegister}
-        />
-
-        <Pressable
-          onPress={() => navigation.navigate("Login")}
-          style={styles.loginLink}
-        >
-          <Text variant="small" color="secondary">
-            已有账号？
-          </Text>
-          <Text variant="small" color="primary">
-            立即登录
-          </Text>
-        </Pressable>
-      </View>
+      </Background>
     </ScrollView>
   );
 };
@@ -300,8 +310,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    justifyContent: "center",
-    padding: 16,
   },
   card: {
     padding: 24,
@@ -364,5 +372,11 @@ const styles = StyleSheet.create({
     marginTop: -8,
     marginBottom: 8,
     marginLeft: 4,
+  },
+  registerLink: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 24,
   },
 });

@@ -19,6 +19,7 @@
     "axios": "^1.7.9",
     "expo": "~52.0.30",
     "expo-status-bar": "~2.0.1",
+    "expo-updates": "^0.26.17",
     "i18next": "^24.2.2",
     "react": "18.3.1",
     "react-i18next": "^15.4.0",
@@ -28,6 +29,8 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^5.2.0",
     "react-native-screens": "^4.6.0",
+    "react-native-size-matters": "^0.4.2",
+    "react-native-toast-message": "^2.2.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

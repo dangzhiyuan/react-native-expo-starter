@@ -1,10 +1,8 @@
-import type { NavigatorScreenParams } from '@react-navigation/native';
+import type { NavigatorScreenParams } from "@react-navigation/native";
 
-export type RootDrawerParamList = {
-  Home: undefined;
-  Components: undefined;
-  Profile: undefined;
-  Settings: undefined;
+export type RootStackParamList = {
+  Auth: NavigatorScreenParams<AuthStackParamList>;
+  Main: NavigatorScreenParams<DrawerParamList>;
 };
 
 export type AuthStackParamList = {
@@ -13,13 +11,15 @@ export type AuthStackParamList = {
   ForgotPassword: undefined;
 };
 
-export type RootStackParamList = {
-  Auth: NavigatorScreenParams<AuthStackParamList>;
-  Main: NavigatorScreenParams<RootDrawerParamList>;
+export type DrawerParamList = {
+  Home: undefined;
+  Profile: undefined;
+  Components: undefined;
+  Settings: undefined;
 };
 
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
-} 
+}

@@ -8,7 +8,8 @@ export type ColorScheme =
   | "orange"
   | "gray"
   | "pink"
-  | "pastel";
+  | "pastel"
+  | "etrain";
 
 // 基础颜色主题接口
 export interface BaseTheme {

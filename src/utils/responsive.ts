@@ -1,7 +1,7 @@
-import { Dimensions, ScaledSize, DimensionValue } from 'react-native';
-import { useState, useEffect } from 'react';
+import { Dimensions, ScaledSize, DimensionValue } from "react-native";
+import { useState, useEffect } from "react";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 // 基准尺寸（以iPhone 11为例）
 const baseWidth = 375;
@@ -10,7 +10,8 @@ const baseHeight = 812;
 // 计算缩放比例
 export const scale = (size: number) => (width / baseWidth) * size;
 export const verticalScale = (size: number) => (height / baseHeight) * size;
-export const moderateScale = (size: number, factor = 0.5) => size + (scale(size) - size) * factor;
+export const moderateScale = (size: number, factor = 0.5) =>
+  size + (scale(size) - size) * factor;
 
 // 屏幕尺寸工具
 export const screenWidth = width;
@@ -45,72 +46,72 @@ export const breakpoints = {
 
 // 添加设备类型检测
 export const getDeviceType = (width: number) => {
-  if (width >= breakpoints.desktop) return 'desktop';
-  if (width >= breakpoints.tablet) return 'tablet';
-  return 'phone';
+  if (width >= breakpoints.desktop) return "desktop";
+  if (width >= breakpoints.tablet) return "tablet";
+  return "phone";
 };
 
-interface ResponsiveLayout {
-  maxWidth: number;  // 改为明确的 number 类型
-  columns: number;
-  gutter: number;
+export type DeviceType = "phone" | "tablet";
+
+export interface ResponsiveLayout {
+  width: number;
+  height: number;
   padding: number;
+  gutter: number;
+  drawerWidth: number;
+}
+
+export interface ResponsiveConfig {
+  device: DeviceType;
+  layout: ResponsiveLayout;
 }
 
 // 添加响应式布局工具
 export const getResponsiveLayout = (width: number): ResponsiveLayout => {
   const device = getDeviceType(width);
-  
+
   switch (device) {
-    case 'desktop':
+    case "desktop":
       return {
-        maxWidth: 1200,  // 使用数字
-        columns: 3,
-        gutter: 32,
+        width: 1200, // 使用数字
+        height: 1200, // 使用数字
         padding: 40,
+        gutter: 32,
+        drawerWidth: 1200, // 使用数字
       };
-    case 'tablet':
+    case "tablet":
       return {
-        maxWidth: 768,  // 使用数字
-        columns: 2,
-        gutter: 24,
+        width: 768, // 使用数字
+        height: 768, // 使用数字
         padding: 32,
+        gutter: 24,
+        drawerWidth: width * 0.3, // 使用屏幕30%的宽度
       };
     default:
       return {
-        maxWidth: width,  // 使用屏幕宽度
-        columns: 1,
-        gutter: 16,
+        width: width, // 使用屏幕宽度
+        height: height, // 使用屏幕高度
         padding: 16,
+        gutter: 16,
+        drawerWidth: width * 0.85, // 使用屏幕85%的宽度
       };
   }
 };
 
 // 添加响应式Hook
-export const useResponsive = () => {
-  const [dimensions, setDimensions] = useState(() => Dimensions.get('window'));
-  
-  useEffect(() => {
-    const onChange = ({ window }: { window: ScaledSize }) => {
-      setDimensions(window);
-    };
+export const useResponsive = (): ResponsiveConfig => {
+  const device: DeviceType = isTablet ? "tablet" : "phone";
 
-    const subscription = Dimensions.addEventListener('change', onChange);
-    return () => subscription.remove();
-  }, []);
-
-  const { width, height } = dimensions;
-  const device = getDeviceType(width);
-  const layout = getResponsiveLayout(width);
-  
-  return {
+  const layout: ResponsiveLayout = {
     width,
     height,
+    padding: moderateScale(16),
+    gutter: moderateScale(16),
+    drawerWidth: isTablet ? width * 0.3 : width * 0.85,
+  };
+
+  return {
     device,
     layout,
-    isPhone: device === 'phone',
-    isTablet: device === 'tablet',
-    isDesktop: device === 'desktop',
-    isLandscape: width > height,
   };
-}; 
+};

@@ -1,103 +1,84 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import type {
-  DrawerContentComponentProps,
-  DrawerNavigationOptions,
-} from "@react-navigation/drawer";
-import { TextStyle } from "react-native";
 import { useTheme } from "../themes/ThemeProvider";
 import { useResponsive } from "../utils/responsive";
-import { useBreakpoint } from "../hooks/useBreakpoint";
 import { ComponentsScreen } from "../screens/ComponentsScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import { SettingsScreen } from "../screens/SettingsScreen";
-import { HomeScreen } from "../screens/HomeScreen";
-import { MaterialIcons } from "@expo/vector-icons";
-import { CustomDrawerContent } from "../components/CustomDrawerContent";
+import { CustomDrawerContent } from "../components/drawer/CustomDrawerContent";
 import { DrawerToggleButton } from "../components/DrawerToggleButton";
+import { useTranslation } from "react-i18next";
+import { HomeScreen } from "../screens/HomeScreen";
+import { SettingsScreen } from "../screens/SettingsScreen";
+import { useUIStore } from "../store/uiStore";
 
 const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
+  const { t } = useTranslation();
+  const { layout, device } = useResponsive();
   const { theme } = useTheme();
-  const { layout } = useResponsive();
-  const { up } = useBreakpoint();
-
-  if (!theme) {
-    return null; // 或者返回一个加载指示器
-  }
-
-  const getDrawerWidth = () => {
-    if (up("xl")) return "20%";
-    if (up("lg")) return "25%";
-    if (up("md")) return "30%";
-    return "80%";
-  };
-
-  const renderDrawerIcon = (name: keyof typeof MaterialIcons.glyphMap) => {
-    return ({ color, size }: { color: string; size: number }) => (
-      <MaterialIcons name={name} size={size} color={color} />
-    );
-  };
-
-  const screenOptions: DrawerNavigationOptions = {
-    headerStyle: {
-      backgroundColor: theme.surface,
-      height: layout.gutter * 3.5,
-    },
-    headerTintColor: theme.text.primary,
-    headerTitleStyle: {
-      fontWeight: theme.typography.weights.h2 as TextStyle["fontWeight"],
-      fontSize: theme.typography.sizes.h3,
-    },
-    drawerStyle: {
-      backgroundColor: theme.surface,
-      width: getDrawerWidth(),
-    },
-    drawerType: up("md") ? "permanent" : "front",
-    drawerPosition: "right",
-    drawerActiveTintColor: theme.primary,
-    drawerInactiveTintColor: theme.text.secondary,
-    headerLeft: () => null,
-    headerRight: ({ tintColor }: { tintColor?: string }) =>
-      !up("md") && <DrawerToggleButton tintColor={tintColor} />,
-  };
+  const isHeaderVisible = useUIStore((state) => state.isHeaderVisible);
 
   return (
     <Drawer.Navigator
-      screenOptions={screenOptions}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={({ navigation }) => ({
+        headerShown: isHeaderVisible,
+        drawerType: device === "tablet" ? "permanent" : "front",
+        drawerStyle: {
+          width: device === "tablet" ? layout.drawerWidth : "85%",
+          backgroundColor: theme.surface,
+        },
+        drawerPosition: "right",
+        overlayColor: theme.text.primary + "40",
+        headerLeft: () => null,
+        headerRight: () =>
+          device !== "tablet" ? <DrawerToggleButton /> : null,
+        headerTitleStyle: {
+          fontSize: 18,
+          fontWeight: "600",
+          color: theme.text.inverse,
+        },
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: theme.primary,
+          elevation: 4,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+        },
+      })}
     >
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: "首页",
-          drawerIcon: renderDrawerIcon("home"),
-        }}
-      />
-      <Drawer.Screen
-        name="Components"
-        component={ComponentsScreen}
-        options={{
-          title: "组件",
-          drawerIcon: renderDrawerIcon("widgets"),
+          title: t("navigation.home"),
         }}
       />
       <Drawer.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "个人资料",
-          drawerIcon: renderDrawerIcon("person"),
+          title: t("navigation.profile"),
+        }}
+      />
+      <Drawer.Screen
+        name="Components"
+        component={ComponentsScreen}
+        options={{
+          title: t("navigation.components"),
         }}
       />
       <Drawer.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: "设置",
-          drawerIcon: renderDrawerIcon("settings"),
+          title: t("navigation.settings"),
         }}
       />
     </Drawer.Navigator>

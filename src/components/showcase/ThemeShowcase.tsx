@@ -84,6 +84,12 @@ export const ThemeShowcase = () => {
             onPress={() => handleThemeChange("pastel")}
             loading={isChanging}
           />
+          <Button
+            title="Etrain主题"
+            variant={theme.colorScheme === "etrain" ? "primary" : "outline"}
+            onPress={() => handleThemeChange("etrain")}
+            loading={isChanging}
+          />
         </View>
       </View>
 

@@ -12,7 +12,15 @@ import { useTheme } from "../themes/ThemeProvider";
 import { MaterialIcons } from "@expo/vector-icons";
 import type { TextProps } from "./Text";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "text";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "error"
+  | "text"
+  | "success"
+  | "warning";
 
 interface ButtonProps {
   title: string;
@@ -59,6 +67,14 @@ const Button = ({
       case "outline":
       case "text":
         return "transparent";
+      case "error":
+        return theme.error;
+      case "success":
+        return theme.success;
+      case "warning":
+        return theme.warning;
+      case "ghost":
+        return "transparent";
       default:
         return theme.primary;
     }
@@ -69,6 +85,12 @@ const Button = ({
     switch (variant) {
       case "outline":
         return theme.primary;
+      case "error":
+        return theme.error;
+      case "success":
+        return theme.success;
+      case "warning":
+        return theme.warning;
       default:
         return "transparent";
     }
@@ -79,9 +101,13 @@ const Button = ({
     switch (variant) {
       case "primary":
       case "secondary":
+      case "error":
+      case "success":
+      case "warning":
         return theme.text.inverse;
       case "outline":
       case "text":
+      case "ghost":
         return theme.primary;
       default:
         return theme.text.inverse;
@@ -94,9 +120,13 @@ const Button = ({
     switch (variant) {
       case "primary":
       case "secondary":
+      case "error":
+      case "success":
+      case "warning":
         return theme.text.inverse;
       case "outline":
       case "text":
+      case "ghost":
         return theme.primary;
       default:
         return theme.text.inverse;
