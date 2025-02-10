@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useTheme } from "../themes/ThemeProvider";
 import { useResponsive } from "../utils/responsive";
 import { ComponentsScreen } from "../screens/ComponentsScreen";
-import { ProfileScreen } from "../screens/ProfileScreen";
+import ProfileScreen from "@/screens/profile/ProfileScreen";
 import { CustomDrawerContent } from "../components/drawer/CustomDrawerContent";
 import { DrawerToggleButton } from "../components/DrawerToggleButton";
 import { useTranslation } from "react-i18next";
@@ -64,7 +64,7 @@ export const DrawerNavigator = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: t("navigation.profile"),
+          title: "个人资料",
         }}
       />
       <Drawer.Screen

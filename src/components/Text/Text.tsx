@@ -17,12 +17,12 @@ export const Text = ({
 }: TextProps) => {
   const { theme } = useTheme();
 
-  console.log("Theme in Text:", {
-    typography: theme.typography,
-    text: theme.text,
-    variant,
-    color,
-  });
+  // console.log("Theme in Text:", {
+  //   typography: theme.typography,
+  //   text: theme.text,
+  //   variant,
+  //   color,
+  // });
 
   const textStyle = StyleSheet.create({
     text: {

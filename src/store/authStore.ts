@@ -12,6 +12,7 @@ interface AuthState {
     email: string;
     avatar: string;
     name: string;
+    role: undefined;
   } | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -41,6 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
           email: `${username}@example.com`,
           name: username,
           avatar: "",
+          role: undefined,
         },
       });
     } catch (error) {
@@ -75,6 +77,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             email: "demo@example.com",
             name: "Demo User",
             avatar: "",
+            role: undefined,
           },
         });
       }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -20,6 +20,8 @@ import { Card } from "../../components/layout/Card";
 import Background from "../../components/layout/Background";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/Button/Button";
+import { Checkbox } from "../../components/Checkbox/Checkbox";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,
@@ -44,6 +46,53 @@ export const LoginScreen = () => {
     password: false,
   });
   const [showToast, setShowToast] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const STORAGE_KEYS = {
+    USERNAME: "@auth_username",
+    PASSWORD: "@auth_password",
+    REMEMBER_ME: "@auth_remember_me",
+  };
+
+  useEffect(() => {
+    loadSavedCredentials();
+  }, []);
+
+  const loadSavedCredentials = async () => {
+    try {
+      const savedRememberMe = await AsyncStorage.getItem(
+        STORAGE_KEYS.REMEMBER_ME
+      );
+      if (savedRememberMe === "true") {
+        const savedUsername = await AsyncStorage.getItem(STORAGE_KEYS.USERNAME);
+        const savedPassword = await AsyncStorage.getItem(STORAGE_KEYS.PASSWORD);
+
+        if (savedUsername) setUsername(savedUsername);
+        if (savedPassword) setPassword(savedPassword);
+        setRememberMe(true);
+      }
+    } catch (error) {
+      console.error("Error loading credentials:", error);
+    }
+  };
+
+  const saveCredentials = async () => {
+    try {
+      if (rememberMe) {
+        await AsyncStorage.setItem(STORAGE_KEYS.USERNAME, username);
+        await AsyncStorage.setItem(STORAGE_KEYS.PASSWORD, password);
+        await AsyncStorage.setItem(STORAGE_KEYS.REMEMBER_ME, "true");
+      } else {
+        await AsyncStorage.multiRemove([
+          STORAGE_KEYS.USERNAME,
+          STORAGE_KEYS.PASSWORD,
+          STORAGE_KEYS.REMEMBER_ME,
+        ]);
+      }
+    } catch (error) {
+      console.error("Error saving credentials:", error);
+    }
+  };
 
   const validateForm = () => {
     const usernameError = validateUsername(username);
@@ -85,10 +134,27 @@ export const LoginScreen = () => {
       setLoading(true);
       setError("");
       await login(username, password);
+
+      await saveCredentials();
     } catch (error) {
       setError(t("auth.loginFailed"));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRememberMeChange = async (value: boolean) => {
+    setRememberMe(value);
+    if (!value) {
+      try {
+        await AsyncStorage.multiRemove([
+          STORAGE_KEYS.USERNAME,
+          STORAGE_KEYS.PASSWORD,
+          STORAGE_KEYS.REMEMBER_ME,
+        ]);
+      } catch (error) {
+        console.error("Error clearing credentials:", error);
+      }
     }
   };
 
@@ -171,6 +237,14 @@ export const LoginScreen = () => {
                 {error}
               </Text>
             ) : null}
+
+            <View style={styles.rememberMeContainer}>
+              <Checkbox
+                checked={rememberMe}
+                onValueChange={handleRememberMeChange}
+                label={t("auth.rememberMe")}
+              />
+            </View>
 
             <Button
               title={t("auth.login")}
@@ -255,6 +329,12 @@ const styles = StyleSheet.create({
   fieldError: {
     marginTop: -8,
     marginBottom: 8,
+    marginLeft: 4,
+  },
+  rememberMeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: spacing.md,
     marginLeft: 4,
   },
 });

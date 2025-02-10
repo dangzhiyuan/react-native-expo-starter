@@ -23,6 +23,26 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "sentry-expo",
+        {
+          "organization": "your-org-name",
+          "project": "your-project-name"
+        }
+      ]
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "your-org-name",
+            "project": "your-project-name"
+          }
+        }
+      ]
     }
   }
 }

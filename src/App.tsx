@@ -2,13 +2,13 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "./themes/ThemeProvider";
 import { AnimatedThemeProvider } from "./themes/AnimatedThemeContext";
-import { ToastProvider } from "./components/Toast/ToastContext";
+import { ToastProvider, useToast } from "./components/Toast/ToastContext";
 import { NetworkProvider } from "./contexts/NetworkProvider";
 import { RootNavigator } from "./navigation/RootNavigator";
 import { StatusBar } from "expo-status-bar";
 import { useAppState } from "./hooks/useAppState";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
-import { errorReporting } from "./services/errorReporting";
+import { errorService } from "@/services/error";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
@@ -27,12 +27,24 @@ const queryClient = new QueryClient({
   },
 });
 
+// 将使用 useToast 的逻辑移到一个单独的组件中
+const ErrorServiceInitializer = () => {
+  const { showToast } = useToast();
+
+  React.useEffect(() => {
+    errorService.setToastFunction(showToast);
+  }, [showToast]);
+
+  return null;
+};
+
 const AppContent = () => {
   useAppState();
   useDoubleBackExit();
 
   return (
     <>
+      <ErrorServiceInitializer />
       <RootNavigator />
       <StatusBar style="auto" hidden={true} />
     </>

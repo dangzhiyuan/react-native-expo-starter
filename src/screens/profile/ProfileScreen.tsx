@@ -1,19 +1,16 @@
-import React from "react";
-import { View, ScrollView, StyleSheet, Image, Pressable } from "react-native";
-import { Text } from "../components/Text/Text";
-import { useThemeContext } from "../themes/ThemeProvider";
-import { useAuthStore } from "../store/authStore";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ScreenContainer } from "../components/layout/ScreenContainer";
-import { Column } from "../components/layout/Column";
-import { Row } from "../components/layout/Row";
-import { ResponsiveImage } from "../components/layout/ResponsiveImage";
-import { useResponsive } from "../utils/responsive";
-import { Container } from "../components/layout/Container";
-import { Card } from "../components/layout/Card";
-import { Divider } from "../components/layout/Divider";
-import Button from "../components/Button/Button";
+import { Container, Card, Divider } from "@/components";
+import { Column } from "@/components/layout/Column";
+import { ResponsiveImage } from "@/components/layout/ResponsiveImage";
+import { Row } from "@/components/layout/Row";
 import { withAuthGuard } from "@/navigation/guards/AuthGuard";
+import { useAuthStore } from "@/store/authStore";
+import { useThemeContext } from "@/themes/ThemeProvider";
+import { useResponsive } from "@/utils";
+import React from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { Text } from "@/components/Text/Text";
+import Button from "@/components/Button/Button";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // 模拟用户数据
 const mockUserData = {
@@ -62,13 +59,13 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScreenContainer>
+    <ScrollView style={styles.container}>
       <Container>
         <Card variant="elevated">
           <Column spacing={layout.gutter}>
             <Row justify="center">
               <ResponsiveImage
-                source={require("../../assets/logo.png")}
+                source={require("../../../assets/logo.png")}
                 aspectRatio={1}
                 maxWidth={device === "phone" ? 120 : 160}
                 style={styles.avatar}
@@ -77,7 +74,7 @@ const ProfileScreen = () => {
 
             <Divider />
 
-            <Row justify="space-around" wrap>
+            <Row justify="space-around">
               <StatItem label="帖子" value={42} />
               <Divider vertical />
               <StatItem label="关注者" value={128} />
@@ -143,7 +140,7 @@ const ProfileScreen = () => {
           </Column>
         </Card>
       </Container>
-    </ScreenContainer>
+    </ScrollView>
   );
 };
 
@@ -202,5 +199,5 @@ const styles = StyleSheet.create({
   },
 });
 
-//路由守卫
+// 使用 AuthGuard 包装组件，确保只有登录用户才能访问
 export default withAuthGuard(ProfileScreen);
