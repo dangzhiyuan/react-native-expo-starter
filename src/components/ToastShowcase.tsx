@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Text } from "./Text";
+import { Text } from "./Text/Text";
 import { useToast } from "./Toast/ToastContext";
 import { useThemeContext } from "../themes/ThemeProvider";
-import Button from "./Button";
+import Button from "./Button/Button";
 
 export const ToastShowcase = () => {
   const { showToast } = useToast();

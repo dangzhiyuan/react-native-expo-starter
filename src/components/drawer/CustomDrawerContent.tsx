@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import type { DrawerContentComponentProps } from "@react-navigation/drawer";
 import { DrawerItem } from "@react-navigation/drawer";
-import { Text } from "../Text";
+import { Text } from "../Text/Text";
 import { useTheme } from "../../themes/ThemeProvider";
 import { useAuthStore } from "../../store/authStore";
 import { MaterialIcons } from "@expo/vector-icons";

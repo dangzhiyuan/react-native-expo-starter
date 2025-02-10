@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Text } from "./Text";
+import { Text } from "./Text/Text";
 import { useThemeContext } from "../themes/ThemeProvider";
 import type { ThemeMode, ColorScheme } from "../themes/types";
-import Button from "./Button";
+import Button from "./Button/Button";
 
 export const ThemeShowcase = () => {
   const { theme, setThemeMode, setColorScheme } = useThemeContext();

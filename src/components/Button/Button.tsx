@@ -7,37 +7,10 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
-import { Text } from "./Text";
-import { useTheme } from "../themes/ThemeProvider";
 import { MaterialIcons } from "@expo/vector-icons";
-import type { TextProps } from "./Text";
-
-export type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "outline"
-  | "ghost"
-  | "error"
-  | "text"
-  | "success"
-  | "warning";
-
-interface ButtonProps {
-  title: string;
-  variant?: ButtonVariant;
-  onPress?: () => void;
-  disabled?: boolean;
-  loading?: boolean;
-  style?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
-  textProps?: Partial<TextProps>;
-  leftIcon?: keyof typeof MaterialIcons.glyphMap;
-  rightIcon?: keyof typeof MaterialIcons.glyphMap;
-  iconSize?: number;
-  iconColor?: string;
-  loadingColor?: string;
-  activeOpacity?: number;
-}
+import { ButtonProps } from "./types";
+import { useTheme } from "../../themes/ThemeProvider";
+import { Text } from "../Text/Text";
 
 const Button = ({
   title,

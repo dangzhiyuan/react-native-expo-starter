@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
-import { Text } from "../Text";
+import { Text } from "../Text/Text";
 import { useThemeContext } from "../../themes/ThemeProvider";
 
 interface ToastProps {

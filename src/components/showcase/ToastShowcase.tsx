@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "../../themes/ThemeProvider";
-import { Text } from "../Text";
+import { Text } from "../Text/Text";
 import Button from "../Button";
 import { useToast } from "../Toast/ToastContext";
 import { useResponsive } from "../../utils/responsive";

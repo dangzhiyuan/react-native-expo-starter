@@ -1,3 +1,7 @@
+import { TextStyle, ViewStyle } from "react-native";
+import { Theme } from "../../themes/types";
+import { ButtonVariant } from "./types";
+
 export const getButtonStyles = (
   theme: Theme,
   variant: ButtonVariant = "primary"
@@ -34,6 +38,9 @@ export const getButtonStyles = (
     },
     warning: {
       backgroundColor: theme.warning,
+    },
+    text: {
+      backgroundColor: "transparent",
     },
   };
 
@@ -75,6 +82,9 @@ export const getTextStyles = (
     },
     warning: {
       color: theme.text.inverse,
+    },
+    text: {
+      color: theme.text.primary,
     },
   };
 

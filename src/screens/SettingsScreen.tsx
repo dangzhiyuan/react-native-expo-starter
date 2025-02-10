@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Text } from "../components/Text";
-import Button from "../components/Button";
+import { Text } from "../components/Text/Text";
 import { useTheme } from "../themes/ThemeProvider";
 import { useUIStore } from "../store/uiStore";
 import { useLanguageStore } from "../store/languageStore";
@@ -12,6 +11,7 @@ import { ScreenContainer } from "../components/layout/ScreenContainer";
 import { Container } from "../components/layout/Container";
 import type { Language } from "../i18n";
 import type { ThemeMode, ColorScheme } from "../themes/types";
+import Button from "../components/Button/Button";
 
 export const SettingsScreen = () => {
   const { t } = useTranslation();

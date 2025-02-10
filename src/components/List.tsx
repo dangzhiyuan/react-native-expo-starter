@@ -6,7 +6,7 @@ import {
   Pressable,
   PressableProps,
 } from "react-native";
-import { Text } from "./Text";
+import { Text } from "./Text/Text";
 import { useTheme } from "../themes/ThemeProvider";
 import { useResponsive } from "../utils/responsive";
 import { MaterialIcons } from "@expo/vector-icons";

@@ -6,8 +6,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { Text } from "../../components/Text";
-import Button from "../../components/Button";
+import { Text } from "../../components/Text/Text";
 import { useThemeContext } from "../../themes/ThemeProvider";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +19,7 @@ import { moderateScale, isTablet, spacing } from "../../utils/responsive";
 import { Card } from "../../components/layout/Card";
 import Background from "../../components/layout/Background";
 import { useTranslation } from "react-i18next";
+import Button from "../../components/Button/Button";
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,
@@ -187,7 +187,6 @@ export const LoginScreen = () => {
                 title={t("auth.createAccount")}
                 variant="text"
                 onPress={() => navigation.navigate("Register")}
-                loading={loading}
               />
             </View>
           </Card>

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Animated } from "react-native";
-import { Text } from "./Text";
+import { Text } from "./Text/Text";
 import { useTheme } from "../themes/ThemeProvider";
 import { useResponsive } from "../utils/responsive";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

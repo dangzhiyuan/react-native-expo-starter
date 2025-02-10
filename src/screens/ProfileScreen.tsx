@@ -1,10 +1,9 @@
 import React from "react";
 import { View, ScrollView, StyleSheet, Image, Pressable } from "react-native";
-import { Text } from "../components/Text";
+import { Text } from "../components/Text/Text";
 import { useThemeContext } from "../themes/ThemeProvider";
 import { useAuthStore } from "../store/authStore";
 import { MaterialIcons } from "@expo/vector-icons";
-import Button from "../components/Button";
 import { ScreenContainer } from "../components/layout/ScreenContainer";
 import { Column } from "../components/layout/Column";
 import { Row } from "../components/layout/Row";
@@ -13,6 +12,7 @@ import { useResponsive } from "../utils/responsive";
 import { Container } from "../components/layout/Container";
 import { Card } from "../components/layout/Card";
 import { Divider } from "../components/layout/Divider";
+import Button from "../components/Button/Button";
 
 // 模拟用户数据
 const mockUserData = {

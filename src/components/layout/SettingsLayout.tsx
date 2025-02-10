@@ -4,7 +4,7 @@ import { ScreenContainer } from "./ScreenContainer";
 import { Container } from "./Container";
 import { useResponsive } from "../../utils/responsive";
 import { useTheme } from "../../themes/ThemeProvider";
-import { Text } from "../Text";
+import { Text } from "../Text/Text";
 
 interface SettingsLayoutProps {
   title: string;

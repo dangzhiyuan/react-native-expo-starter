@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Animated, StyleSheet, Dimensions } from "react-native";
-import { Text } from "../Text";
+import { Text } from "../Text/Text";
 import { useTheme } from "../../themes/ThemeProvider";
 import { MaterialIcons } from "@expo/vector-icons";
 

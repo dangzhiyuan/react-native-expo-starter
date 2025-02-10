@@ -1,10 +1,10 @@
 import React, { Component, ErrorInfo } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
-import { Text } from "../Text";
-import Button from "../Button";
+import { Text } from "../Text/Text";
 import { useTheme } from "../../themes/ThemeProvider";
 import { useResponsive } from "../../utils/responsive";
 import * as Updates from "expo-updates";
+import Button from "../Button/Button";
 
 // 基础属性接口
 interface Props {

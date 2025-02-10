@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text } from "./Text";
+import { Text } from "./Text/Text";
 import { TextInput } from "./TextInput";
-import Button from "./Button";
 import { useTheme } from "../themes/ThemeProvider";
 import { useResponsive } from "../utils/responsive";
 import { MaterialIcons } from "@expo/vector-icons";
 import { List, ListItem } from "./List";
 import type { ColorScheme } from "../themes/types";
+import Button from "./Button/Button";
 
 export const ComponentsShowcase = () => {
   const { theme, setThemeMode, setColorScheme } = useTheme();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Text as RNText, StyleSheet, TextStyle, StyleProp } from "react-native";
-import { useTheme } from "../themes/ThemeProvider";
+import { useTheme } from "../../themes/ThemeProvider";
 
 export interface TextProps {
   children: React.ReactNode;

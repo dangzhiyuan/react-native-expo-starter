@@ -6,7 +6,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { Text } from "../../components/Text";
+import { Text } from "../../components/Text/Text";
 import { useThemeContext } from "../../themes/ThemeProvider";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,9 +18,9 @@ import {
 } from "../../utils/validation";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AuthStackParamList } from "../../navigation/types";
-import Button from "../../components/Button";
 import Background from "../../components/layout/Background";
 import { t } from "i18next";
+import Button from "../../components/Button/Button";
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,

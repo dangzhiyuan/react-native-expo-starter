@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Text } from "../components/Text";
-import Button from "../components/Button";
+import { Text } from "../components/Text/Text";
 import { useTheme } from "../themes/ThemeProvider";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
@@ -15,6 +14,7 @@ import { PullToRefresh } from "../components/PullToRefresh";
 import { DoubleTapLike } from "../components/DoubleTapLike";
 import { SwipeableRow } from "../components/SwipeableRow";
 import { useTranslation } from "react-i18next";
+import Button from "../components/Button/Button";
 
 type HomeScreenNavigationProp = DrawerNavigationProp<DrawerParamList, "Home">;
 

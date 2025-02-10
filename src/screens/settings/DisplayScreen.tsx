@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Text } from "../../components/Text";
+import { Text } from "../../components/Text/Text";
 import Button from "../../components/Button";
 import { useTheme } from "../../themes/ThemeProvider";
 import { useUIStore } from "../../store/uiStore";
