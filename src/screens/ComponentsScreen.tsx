@@ -8,6 +8,7 @@ import { ComponentsShowcase } from "../components/ComponentsShowcase";
 import { ThemeShowcase } from "../components/ThemeShowcase";
 import { ToastShowcase } from "../components/ToastShowcase";
 import { useResponsive } from "../utils/responsive";
+import { ErrorBoundaryShowcase } from "../components/showcase/ErrorBoundaryShowcase";
 
 export const ComponentsScreen = () => {
   const { device, layout } = useResponsive();
@@ -19,7 +20,6 @@ export const ComponentsScreen = () => {
         <Grid columns={columns} spacing={layout.gutter}>
           <GridItem>
             <Card variant="elevated">
-              <Text>1111</Text>
               <ComponentsShowcase />
             </Card>
           </GridItem>
@@ -33,6 +33,12 @@ export const ComponentsScreen = () => {
           <GridItem span={columns}>
             <Card variant="elevated">
               <ToastShowcase />
+            </Card>
+          </GridItem>
+
+          <GridItem>
+            <Card variant="elevated">
+              <ErrorBoundaryShowcase />
             </Card>
           </GridItem>
         </Grid>

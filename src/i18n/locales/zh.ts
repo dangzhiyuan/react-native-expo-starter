@@ -22,6 +22,7 @@ export default {
     usernameRequired: "请输入用户名",
     passwordRequired: "请输入密码",
     loginFailed: "登录失败",
+    rememberMe: "记住账号密码",
   },
   navigation: {
     main: "主要功能",

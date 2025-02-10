@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "../Text/Text";
-import Button from "../Button";
 import { useTheme } from "../../themes/ThemeProvider";
 import { useResponsive } from "../../utils/responsive";
+import Button from "../Button/Button";
 
 // 一个会抛出错误的组件
 const BuggyCounter = () => {
