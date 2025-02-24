@@ -6,11 +6,13 @@ import {
   StyleProp,
   ViewStyle,
   TextStyle,
+  View,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ButtonProps } from "./types";
 import { useTheme } from "../../themes/ThemeProvider";
 import { Text } from "../Text/Text";
+import { fontSizes } from "@/utils";
 
 const Button = ({
   title,
@@ -127,16 +129,8 @@ const Button = ({
     />
   );
 
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        buttonStyles,
-        pressed && { opacity: activeOpacity },
-        disabled && styles.disabled,
-      ]}
-      onPress={onPress}
-      disabled={disabled || loading}
-    >
+  const buttonContent = (
+    <View style={styles.contentContainer}>
       {loading ? (
         <ActivityIndicator color={getLoaderColor()} style={styles.loader} />
       ) : (
@@ -157,18 +151,39 @@ const Button = ({
           {rightIcon && renderIcon(rightIcon)}
         </React.Fragment>
       )}
+    </View>
+  );
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        buttonStyles,
+        pressed && { opacity: activeOpacity },
+        disabled && styles.disabled,
+      ]}
+      onPress={onPress}
+      disabled={disabled || loading}
+    >
+      {buttonContent}
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    minHeight: 40,
+    minWidth: 80,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: "transparent",
   },
@@ -180,6 +195,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   text: {
+    fontSize: fontSizes.small,
     textAlign: "center",
   },
   textWithIcon: {

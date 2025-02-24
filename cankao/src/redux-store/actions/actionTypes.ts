@@ -1,0 +1,5 @@
+export const SET_TEXT_INPUT_VALUES = "SET_TEXT_INPUT_VALUES";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const SET_PAGE = "SET_PAGE";
+export const SET_TRAIN_SCORE = "SET_TRAIN_SCORE";
+export const SET_CURRENT_LESSON = "SET_CURRENT_LESSON";

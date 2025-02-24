@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, ViewStyle } from "react-native";
-import { useResponsive } from "../../utils/responsive";
+import { useResponsive, isTablet } from "../../utils/responsive";
 
 interface ModalContentProps {
   children: React.ReactNode;
@@ -17,10 +17,12 @@ export const ModalContent = ({
 
   const styles = StyleSheet.create({
     content: {
-      minHeight: 100,
+      minHeight: isTablet ? 300 : 200,
+      paddingHorizontal: layout.padding,
+      paddingBottom: layout.padding * 2,
     },
     scrollContent: {
-      maxHeight: layout.height * 0.6,
+      maxHeight: isTablet ? layout.height * 0.7 : layout.height * 0.6,
     },
   });
 

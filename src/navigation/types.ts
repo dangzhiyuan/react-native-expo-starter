@@ -1,8 +1,14 @@
 import type { NavigatorScreenParams } from "@react-navigation/native";
 
 export type RootStackParamList = {
-  Auth: NavigatorScreenParams<AuthStackParamList>;
+  Auth: undefined;
+  App: undefined;
   Main: NavigatorScreenParams<DrawerParamList>;
+};
+
+export type HomeStackParamList = {
+  Home: undefined;
+  CreateTrain: undefined;
 };
 
 export type AuthStackParamList = {
@@ -12,7 +18,7 @@ export type AuthStackParamList = {
 };
 
 export type DrawerParamList = {
-  Home: undefined;
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
   Profile: undefined;
   Components: undefined;
   Settings: undefined;

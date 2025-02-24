@@ -11,6 +11,7 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import { Text } from "@/components/Text/Text";
 import Button from "@/components/Button/Button";
 import { MaterialIcons } from "@expo/vector-icons";
+import Logo from "@/components/Logo/Logo";
 
 // 模拟用户数据
 const mockUserData = {
@@ -35,6 +36,7 @@ const StatItem = ({ label, value }: StatItemProps) => {
 
   return (
     <View style={styles.statItem}>
+      <Logo />
       <Text variant="h2" style={{ color: theme.primary }}>
         {value}
       </Text>

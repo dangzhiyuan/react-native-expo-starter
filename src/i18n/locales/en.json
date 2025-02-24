@@ -1,0 +1,26 @@
+{
+  "home": {
+    "createTrain": "Create Training",
+    "history": "History",
+    "settings": "Settings",
+    "language": "Language",
+    "account": "Account",
+    "version": "Version",
+    "hello": "Hello",
+    "helloInfo": "Welcome back"
+  },
+  "logout": {
+    "confirmTitle": "Confirm Logout",
+    "confirmMessage": "Are you sure you want to logout?",
+    "logout": "Logout"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "DebugModal": "Debug Settings",
+    "sessionId": "Session ID",
+    "simulatorUrl": "Simulator URL"
+  }
+}

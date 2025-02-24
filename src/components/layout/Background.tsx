@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: spacing.md,
-    paddingHorizontal: isTablet ? spacing.xl : spacing.md,
+    paddingHorizontal: isTablet ? spacing.xl : spacing.lg,
   },
 });

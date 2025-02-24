@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 日系小清新主题的基础色板
-const pastelPalette = {
+export const pastelPalette = {
   mint50: "#F0FDF9",
   mint100: "#CCFBEF",
   mint200: "#99F6E0",

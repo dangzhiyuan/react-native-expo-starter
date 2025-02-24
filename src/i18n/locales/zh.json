@@ -1,0 +1,26 @@
+{
+  "home": {
+    "createTrain": "创建训练",
+    "history": "历史记录",
+    "settings": "设置",
+    "language": "语言",
+    "account": "账号",
+    "version": "版本",
+    "hello": "你好",
+    "helloInfo": "欢迎回来"
+  },
+  "logout": {
+    "confirmTitle": "确认退出",
+    "confirmMessage": "确定要退出登录吗？",
+    "logout": "退出登录"
+  },
+  "common": {
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "auth": {
+    "DebugModal": "调试设置",
+    "sessionId": "会话ID",
+    "simulatorUrl": "模拟器地址"
+  }
+}

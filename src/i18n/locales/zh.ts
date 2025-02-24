@@ -1,6 +1,6 @@
 export default {
   common: {
-    confirm: "确认",
+    confirm: "确定",
     cancel: "取消",
     save: "保存",
     delete: "删除",
@@ -14,7 +14,7 @@ export default {
     username: "用户名",
     password: "密码",
     email: "邮箱",
-    loginTitle: "欢迎回来",
+    loginTitle: "欢迎登录",
     loginSubtitle: "请登录您的账号",
     forgotPassword: "忘记密码？",
     noAccount: "还没有账号？",
@@ -23,6 +23,11 @@ export default {
     passwordRequired: "请输入密码",
     loginFailed: "登录失败",
     rememberMe: "记住账号密码",
+    contactAdmin: "请联系管理员",
+    currentUrl: "后台地址",
+    simulatorUrl: "模拟机编号",
+    sessionId: "会话ID",
+    DebugModal: "调试设置",
   },
   navigation: {
     main: "主要功能",
@@ -82,6 +87,14 @@ export default {
   },
   home: {
     welcome: "欢迎",
+    createTrain: "创建训练",
+    history: "历史记录",
+    settings: "设置",
+    language: "语言",
+    account: "账号",
+    version: "版本",
+    hello: "你好",
+    helloInfo: "欢迎回来",
     introduce:
       "这是一个示例应用，展示了如何使用 React Native 和 TypeScript 构建一个跨平台的移动应用。",
     network: "网络状态",
@@ -98,6 +111,11 @@ export default {
     connected: "已连接 ({{type}})",
     offline: "离线模式",
     importantAction: "重要操作",
+  },
+  logout: {
+    confirmTitle: "确认退出",
+    confirmMessage: "确定要退出登录吗？",
+    logout: "退出登录",
   },
   network: {
     connected: "网络已连接 ({{type}})",

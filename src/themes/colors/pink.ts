@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 粉色主题的基础色板
-const pinkPalette = {
+export const pinkPalette = {
   pink50: "#FDF2F8",
   pink100: "#FCE7F3",
   pink200: "#FBCFE8",

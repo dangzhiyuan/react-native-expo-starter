@@ -17,14 +17,14 @@ export const Card = ({ children, variant = "elevated", style }: Props) => {
     return StyleSheet.create({
       card: {
         padding: layout.padding,
-        borderRadius: 8,
+        borderRadius: 20,
         backgroundColor: theme.surface,
         ...(variant === "elevated" && {
-          shadowColor: theme.text.primary,
+          shadowColor: theme.surface,
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
-          elevation: 4,
+          elevation: 2,
         }),
         ...(variant === "outlined" && {
           borderWidth: 1,

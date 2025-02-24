@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 import { useResponsive } from "../../utils/responsive";
-import { ButtonList } from "../layout/ButtonList";
+import { isTablet } from "../../utils/responsive";
 
 interface ModalFooterProps {
   children: React.ReactNode;
@@ -13,16 +13,17 @@ export const ModalFooter = ({ children, style }: ModalFooterProps) => {
 
   const styles = StyleSheet.create({
     footer: {
-      marginTop: layout.gutter,
-      paddingTop: layout.gutter,
-      borderTopWidth: 1,
-      borderTopColor: "rgba(0, 0, 0, 0.1)",
+      marginTop: -layout.padding * 2,
+    },
+    buttonContainer: {
+      width: isTablet ? "50%" : "80%",
+      alignSelf: "center",
     },
   });
 
   return (
     <View style={[styles.footer, style]}>
-      <ButtonList>{children}</ButtonList>
+      <View style={styles.buttonContainer}>{children}</View>
     </View>
   );
 };

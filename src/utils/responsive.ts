@@ -17,7 +17,7 @@ export const moderateScale = (size: number, factor = 0.5) =>
 export const screenWidth = width;
 export const screenHeight = height;
 export const isSmallDevice = width < 375;
-export const isTablet = width >= 768;
+export const isTablet = width >= 700;
 
 // 响应式间距
 export const spacing = {
@@ -34,7 +34,7 @@ export const fontSizes = {
   h2: moderateScale(20),
   h3: moderateScale(18),
   body: moderateScale(16),
-  small: moderateScale(14),
+  small: moderateScale(12),
 };
 
 // 添加设备尺寸断点
@@ -105,7 +105,7 @@ export const useResponsive = (): ResponsiveConfig => {
   const layout: ResponsiveLayout = {
     width,
     height,
-    padding: moderateScale(16),
+    padding: moderateScale(26),
     gutter: moderateScale(16),
     drawerWidth: isTablet ? width * 0.3 : width * 0.85,
   };

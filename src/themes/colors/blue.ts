@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 蓝色主题的基础色板
-const bluePalette = {
+export const bluePalette = {
   blue50: "#EFF6FF",
   blue100: "#DBEAFE",
   blue200: "#BFDBFE",

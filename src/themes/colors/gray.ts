@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 灰色主题的基础色板
-const grayPalette = {
+export const grayPalette = {
   gray50: "#F9FAFB",
   gray100: "#F3F4F6",
   gray200: "#E5E7EB",

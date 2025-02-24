@@ -8,11 +8,25 @@ import { useAuthStore } from "../../store/authStore";
 import { MaterialIcons } from "@expo/vector-icons";
 import { moderateScale, spacing, isTablet } from "../../utils/responsive";
 import { useTranslation } from "react-i18next";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
+import type { DrawerParamList, HomeStackParamList } from "@/navigation/types";
+import { useNavigation } from "@react-navigation/native";
+import type { CompositeNavigationProp } from "@react-navigation/native";
+import type { DrawerNavigationProp } from "@react-navigation/drawer";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+type NavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<DrawerParamList>,
+  NativeStackNavigationProp<HomeStackParamList>
+>;
+
+export const CustomDrawerContent = (
+  props: DrawerContentComponentProps<DrawerParamList>
+) => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { user, logout } = useAuthStore();
+  const navigation = useNavigation<NavigationProp>();
 
   const styles = StyleSheet.create({
     container: {
@@ -61,10 +75,15 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     },
   });
 
+  const onItemPress = (route: keyof DrawerParamList) => {
+    props.navigation.navigate(route);
+    props.navigation.closeDrawer();
+  };
+
   const renderDrawerItem = (
     label: string,
     icon: keyof typeof MaterialIcons.glyphMap,
-    route: string
+    route: keyof DrawerParamList
   ) => (
     <DrawerItem
       label={label}
@@ -74,50 +93,56 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       activeBackgroundColor={theme.primary + "20"}
       activeTintColor={theme.primary}
       inactiveTintColor={theme.text.secondary}
-      onPress={() => props.navigation.navigate(route)}
+      onPress={() => onItemPress(route)}
     />
   );
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.userSection}>
-        <View style={styles.avatarContainer}>
-          <Image
-            source={
-              user?.avatar
-                ? { uri: user.avatar }
-                : require("../../../assets/logo.png")
-            }
-            style={styles.avatar}
-            resizeMode="cover"
-          />
+    <DrawerContentScrollView {...props}>
+      <View style={styles.container}>
+        <Pressable style={styles.userSection}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={
+                user?.avatar
+                  ? { uri: user.avatar }
+                  : require("../../../assets/logo.png")
+              }
+              style={styles.avatar}
+              resizeMode="cover"
+            />
+          </View>
+          <Text variant="h3" color="inverse" style={styles.username}>
+            {user?.name || "用户名"}
+          </Text>
+          <Text variant="small" color="inverse" style={styles.email}>
+            {user?.email || "user@example.com"}
+          </Text>
+        </Pressable>
+
+        <View style={styles.section}>
+          <Text variant="small" color="secondary" style={styles.sectionTitle}>
+            {t("navigation.main")}
+          </Text>
+          {renderDrawerItem(t("navigation.home"), "home", "HomeStack")}
+          {renderDrawerItem(t("navigation.profile"), "person", "Profile")}
+          {renderDrawerItem(
+            t("navigation.components"),
+            "widgets",
+            "Components"
+          )}
+          {renderDrawerItem(t("navigation.settings"), "settings", "Settings")}
         </View>
-        <Text variant="h3" color="inverse" style={styles.username}>
-          {user?.name || "用户名"}
-        </Text>
-        <Text variant="small" color="inverse" style={styles.email}>
-          {user?.email || "user@example.com"}
-        </Text>
-      </Pressable>
 
-      <View style={styles.section}>
-        <Text variant="small" color="secondary" style={styles.sectionTitle}>
-          {t("navigation.main")}
-        </Text>
-        {renderDrawerItem(t("navigation.home"), "home", "Home")}
-        {renderDrawerItem(t("navigation.profile"), "person", "Profile")}
-        {renderDrawerItem(t("navigation.components"), "widgets", "Components")}
-        {renderDrawerItem(t("navigation.settings"), "settings", "Settings")}
+        <DrawerItem
+          label={t("auth.logout")}
+          icon={({ size }) => (
+            <MaterialIcons name="logout" size={size} color={theme.error} />
+          )}
+          labelStyle={{ color: theme.error }}
+          onPress={logout}
+        />
       </View>
-
-      <DrawerItem
-        label={t("auth.logout")}
-        icon={({ size }) => (
-          <MaterialIcons name="logout" size={size} color={theme.error} />
-        )}
-        labelStyle={{ color: theme.error }}
-        onPress={logout}
-      />
-    </View>
+    </DrawerContentScrollView>
   );
 };

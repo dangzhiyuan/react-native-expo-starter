@@ -1,22 +1,22 @@
 import { alpha } from "../../utils/theme";
 
 // etrain主题的基础色板
-const etrainPalette = {
+export const etrainPalette = {
   primary: "#c5cdde",
   secondary: "#8290ae",
-  secondaryDark: "#5b21b6",
+  secondaryDark: "#8290ae",
   secondaryLight: "#a78bfa",
   tertiary: "#999999",
   dark: "#191d28",
   gray: "#2e3242",
   background: "#232838",
-  white: "#f3f4f8",
+  white: "#ebebf5",
   lightWhite: "#cccccc",
   button1: "#5a91cc",
   button2: "#5ac4cc",
   button3: "#60a5fa",
   button4: "#a78bfa",
-  primaryDark: "#1e40af",
+  primaryDark: "#5a91cc",
   primaryLight: "#60a5fa",
   grayDark: "#1f2937",
   black: "#000000",
@@ -44,14 +44,20 @@ export const lightEtrain = {
     inverse: etrainPalette.white,
     error: etrainPalette.danger,
   },
+  other: {
+    button1: etrainPalette.button1,
+    button2: etrainPalette.button2,
+    button3: etrainPalette.button3,
+    button4: etrainPalette.button4,
+  },
 };
 
 // 深色模式
 export const darkEtrain = {
   primary: etrainPalette.primaryDark,
   secondary: etrainPalette.secondaryDark,
-  surface: etrainPalette.dark,
-  background: etrainPalette.grayDark,
+  surface: etrainPalette.background,
+  background: etrainPalette.dark,
   border: etrainPalette.gray,
   hover: alpha(etrainPalette.primaryLight, 0.08),
   error: etrainPalette.danger,
@@ -59,9 +65,15 @@ export const darkEtrain = {
   success: etrainPalette.success,
   text: {
     primary: etrainPalette.white,
-    secondary: etrainPalette.lightWhite,
+    secondary: etrainPalette.gray,
     disabled: etrainPalette.tertiary,
-    inverse: etrainPalette.dark,
+    inverse: etrainPalette.white,
     error: etrainPalette.danger,
+  },
+  other: {
+    button1: etrainPalette.button1,
+    button2: etrainPalette.button2,
+    button3: etrainPalette.button3,
+    button4: etrainPalette.button4,
   },
 };

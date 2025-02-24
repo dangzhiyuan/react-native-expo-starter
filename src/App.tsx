@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "./themes/ThemeProvider";
 import { AnimatedThemeProvider } from "./themes/AnimatedThemeContext";
-import { ToastProvider, useToast } from "./components/Toast/ToastContext";
+import { ToastProvider } from "./components/Toast/ToastContext";
 import { NetworkProvider } from "./contexts/NetworkProvider";
 import { RootNavigator } from "./navigation/RootNavigator";
 import { StatusBar } from "expo-status-bar";
@@ -12,9 +12,12 @@ import { errorService } from "@/services/error";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
-import { useDoubleBackExit } from "./hooks/useDoubleBackExit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./i18n";
+import FlashMessage from "react-native-flash-message";
+import { BackHandlerComponent } from "./components/BackHandler/BackHandlerComponent";
+import { useToast } from "./components/Toast/ToastProvider";
+import { useDoubleBackExit } from "./hooks/useDoubleBackExit";
 
 // 创建 QueryClient 实例
 const queryClient = new QueryClient({
@@ -40,12 +43,12 @@ const ErrorServiceInitializer = () => {
 
 const AppContent = () => {
   useAppState();
-  useDoubleBackExit();
 
   return (
     <>
       <ErrorServiceInitializer />
       <RootNavigator />
+      <FlashMessage position="center" />
       <StatusBar style="auto" hidden={true} />
     </>
   );
@@ -61,7 +64,9 @@ const App = () => {
               <ToastProvider>
                 <NetworkProvider>
                   <AnimatedThemeProvider>
-                    <AppContent />
+                    <NavigationContainer>
+                      <AppContent />
+                    </NavigationContainer>
                   </AnimatedThemeProvider>
                 </NetworkProvider>
               </ToastProvider>

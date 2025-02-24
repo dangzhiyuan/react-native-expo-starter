@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 橙色主题的基础色板
-const orangePalette = {
+export const orangePalette = {
   orange50: "#FFF7ED",
   orange100: "#FFEDD5",
   orange200: "#FED7AA",

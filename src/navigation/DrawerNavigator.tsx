@@ -7,11 +7,12 @@ import ProfileScreen from "@/screens/profile/ProfileScreen";
 import { CustomDrawerContent } from "../components/drawer/CustomDrawerContent";
 import { DrawerToggleButton } from "../components/DrawerToggleButton";
 import { useTranslation } from "react-i18next";
-import { HomeScreen } from "../screens/HomeScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { useUIStore } from "../store/uiStore";
+import { HomeStack } from "./HomeStack";
+import type { DrawerParamList } from "./types";
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<DrawerParamList>();
 
 export const DrawerNavigator = () => {
   const { t } = useTranslation();
@@ -24,16 +25,13 @@ export const DrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         headerShown: isHeaderVisible,
-        drawerType: device === "tablet" ? "permanent" : "front",
         drawerStyle: {
-          width: device === "tablet" ? layout.drawerWidth : "85%",
           backgroundColor: theme.surface,
         },
         drawerPosition: "right",
         overlayColor: theme.text.primary + "40",
         headerLeft: () => null,
-        headerRight: () =>
-          device !== "tablet" ? <DrawerToggleButton /> : null,
+        headerRight: () => <DrawerToggleButton />,
         headerTitleStyle: {
           fontSize: 18,
           fontWeight: "600",
@@ -54,8 +52,8 @@ export const DrawerNavigator = () => {
       })}
     >
       <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           title: t("navigation.home"),
         }}
@@ -64,7 +62,7 @@ export const DrawerNavigator = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "个人资料",
+          title: t("navigation.profile"),
         }}
       />
       <Drawer.Screen

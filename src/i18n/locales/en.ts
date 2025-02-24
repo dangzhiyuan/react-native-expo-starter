@@ -14,7 +14,7 @@ export default {
     username: "Username",
     password: "Password",
     email: "Email",
-    loginTitle: "Welcome Back",
+    loginTitle: "Welcome",
     loginSubtitle: "Please sign in to your account",
     forgotPassword: "Forgot Password?",
     noAccount: "Don't have an account?",
@@ -22,6 +22,12 @@ export default {
     usernameRequired: "Username is required",
     passwordRequired: "Password is required",
     loginFailed: "Login failed",
+    rememberMe: "remember",
+    contactAdmin: "contact admin",
+    currentUrl: "input url",
+    simulatorUrl: "simulator num",
+    sessionId: "Session ID",
+    DebugModal: "Debug Settings",
   },
   navigation: {
     main: "Main",
@@ -81,6 +87,14 @@ export default {
   },
   home: {
     welcome: "Welcome",
+    createTrain: "Create Training",
+    history: "History",
+    settings: "Settings",
+    language: "Language",
+    account: "Account",
+    version: "Version",
+    hello: "Hello",
+    helloInfo: "Welcome back",
     introduce:
       "This is an example app built with React Native and TypeScript. It showcases how to create a cross-platform mobile app.",
     network: "Network Status",
@@ -97,6 +111,11 @@ export default {
     connected: "Connected ({{type}})",
     offline: "Offline Mode",
     importantAction: "Important Action",
+  },
+  logout: {
+    confirmTitle: "Confirm Logout",
+    confirmMessage: "Are you sure you want to logout?",
+    logout: "Logout",
   },
   network: {
     connected: "Network Connected ({{type}})",

@@ -56,27 +56,27 @@ export const TextInput = forwardRef<RNTextInput, Props>(
       inputContainer: {
         flexDirection: "row",
         alignItems: "center",
-        borderWidth: 1,
-        borderRadius: 8,
+        borderWidth: 0.5,
+        borderRadius: 30,
         borderColor: error
           ? theme.error
           : isFocused
           ? theme.primary
           : theme.border,
-        backgroundColor: theme.surface,
-        paddingHorizontal: layout.gutter,
-        minHeight: layout.gutter * 3,
+        backgroundColor: theme.background,
+        paddingHorizontal: layout.gutter * 1.5,
+        minHeight: 48,
       },
       input: {
         flex: 1,
         color: theme.text.primary,
         fontSize: theme.typography.sizes.body,
         paddingVertical: layout.gutter / 2,
-        marginLeft: leftIcon ? layout.gutter / 2 : 0,
-        marginRight: rightIcon ? layout.gutter / 2 : 0,
+        marginLeft: leftIcon ? layout.gutter : 0,
+        marginRight: rightIcon ? layout.gutter : 0,
       },
       icon: {
-        color: error ? theme.error : theme.text.secondary,
+        color: error ? theme.error : theme.text.primary,
       },
       error: {
         marginTop: layout.gutter / 2,

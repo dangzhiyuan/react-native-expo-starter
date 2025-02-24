@@ -29,6 +29,12 @@ export interface BaseTheme {
     inverse: string;
     error: string;
   };
+  other?: {
+    button1?: string;
+    button2?: string;
+    button3?: string;
+    button4?: string;
+  };
 }
 
 // 完整主题接口

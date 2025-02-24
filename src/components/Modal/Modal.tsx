@@ -13,11 +13,11 @@ import {
 import { useTheme } from "../../themes/ThemeProvider";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text } from "../Text/Text";
-import { useResponsive } from "../../utils/responsive";
+import { useResponsive, isTablet } from "../../utils/responsive";
 
 interface ModalProps {
   visible: boolean;
-  onClose: () => void;
+  onDismiss: () => void;
   children: React.ReactNode;
   title?: string;
   showCloseButton?: boolean;
@@ -27,9 +27,9 @@ interface ModalProps {
   avoidKeyboard?: boolean;
 }
 
-export const Modal = ({
+export const Modal: React.FC<ModalProps> = ({
   visible,
-  onClose,
+  onDismiss,
   children,
   title,
   showCloseButton = true,
@@ -37,9 +37,8 @@ export const Modal = ({
   animationType = "fade",
   contentStyle,
   avoidKeyboard = true,
-}: ModalProps) => {
+}) => {
   const { theme } = useTheme();
-  const { layout } = useResponsive();
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const slideAnim = React.useRef(
     new Animated.Value(Dimensions.get("window").height)
@@ -76,26 +75,22 @@ export const Modal = ({
   }, [visible]);
 
   const styles = StyleSheet.create({
-    backdrop: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    container: {
+    modalContainer: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      padding: layout.padding,
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     content: {
-      backgroundColor: theme.background,
+      backgroundColor: theme.surface,
       borderRadius: 12,
-      padding: layout.padding,
+      padding: 20,
       width: "100%",
-      maxWidth: 500,
-      maxHeight: "90%",
-      shadowColor: "#000",
+      maxWidth: isTablet ? 600 : "95%",
+      alignSelf: "center",
+      shadowColor: "gray",
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
+      shadowOpacity: 0.3,
       shadowRadius: 3.84,
       elevation: 5,
     },
@@ -103,14 +98,18 @@ export const Modal = ({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginBottom: layout.gutter,
+      marginBottom: 20,
     },
     title: {
       flex: 1,
-      paddingRight: showCloseButton ? layout.gutter : 0,
+      fontSize: isTablet ? 20 : 18,
+      fontWeight: "600",
+      color: theme.text.primary,
+      paddingRight: showCloseButton ? 20 : 0,
     },
     closeButton: {
-      padding: 4,
+      padding: 8,
+      marginRight: -8,
     },
   });
 
@@ -123,13 +122,7 @@ export const Modal = ({
           opacity: fadeAnim,
           transform: [
             {
-              translateY:
-                animationType === "slide"
-                  ? slideAnim
-                  : fadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [20, 0],
-                    }),
+              translateY: animationType === "slide" ? slideAnim : 0,
             },
           ],
         },
@@ -143,7 +136,7 @@ export const Modal = ({
             </Text>
           )}
           {showCloseButton && (
-            <Pressable style={styles.closeButton} onPress={onClose}>
+            <Pressable style={styles.closeButton} onPress={onDismiss}>
               <MaterialIcons
                 name="close"
                 size={24}
@@ -159,15 +152,14 @@ export const Modal = ({
 
   return (
     <RNModal
+      transparent={true}
       visible={visible}
-      transparent
+      onRequestClose={onDismiss}
       animationType="none"
-      onRequestClose={onClose}
     >
-      <Animated.View style={[styles.backdrop, { opacity: fadeAnim }]} />
       <Pressable
-        style={styles.container}
-        onPress={closeOnBackdropPress ? onClose : undefined}
+        style={styles.modalContainer}
+        onPress={closeOnBackdropPress ? onDismiss : undefined}
       >
         <Pressable onPress={(e) => e.stopPropagation()}>
           {avoidKeyboard ? (

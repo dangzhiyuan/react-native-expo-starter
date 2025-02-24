@@ -1,7 +1,7 @@
 import { alpha } from "../../utils/theme";
 
 // 默认主题的基础色板
-const defaultPalette = {
+export const defaultPalette = {
   white: "#FFFFFF",
   black: "#000000",
   gray50: "#F9FAFB",
