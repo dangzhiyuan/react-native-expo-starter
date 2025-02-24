@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: "black", // 默认文本颜色
+    color: "rgba(130, 144, 174, 1)",
   },
 });
 

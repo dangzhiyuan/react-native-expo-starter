@@ -1,55 +1,94 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Text } from "@/components/Text/Text";
 import { useTheme } from "@/themes/ThemeProvider";
+import Button from "@/components/Button/Button";
+import { spacing, scale, fontSizes } from "@/utils/responsive";
 
 interface TrainInfoProps {
   currentTrainName: string;
-  trainingButtonText: string;
+  sceneName: string | null;
+  hasChildren: boolean;
   onStartTraining: () => void;
+  trainingButtonText: string;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 const TrainInfo: React.FC<TrainInfoProps> = ({
   currentTrainName,
-  trainingButtonText,
+  sceneName,
+  hasChildren,
   onStartTraining,
+  trainingButtonText,
+  disabled = false,
+  loading = false,
 }) => {
   const { theme } = useTheme();
 
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: theme.surface,
+      borderTopWidth: 1,
+      borderTopColor: theme.border,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
+    },
+    content: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    infoContainer: {
+      flex: 1,
+      marginRight: spacing.lg,
+    },
+    trainInfoRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      flexWrap: "wrap",
+    },
+    trainName: {
+      fontSize: fontSizes.h3,
+      color: theme.text.primary,
+      fontWeight: "600",
+    },
+    separator: {
+      color: theme.text.primary,
+      fontSize: fontSizes.h3,
+      marginHorizontal: spacing.xs,
+      fontWeight: "600",
+    },
+    button: {
+      minWidth: scale(120),
+    },
+  });
+
   return (
-    <View style={styles.footer}>
-      <Text style={styles.trainInfo}>{currentTrainName}</Text>
-      <TouchableOpacity style={styles.trainButton} onPress={onStartTraining}>
-        <Text style={styles.startTrain}>{trainingButtonText}</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <View style={styles.infoContainer}>
+          <View style={styles.trainInfoRow}>
+            <Text style={styles.trainName}>{sceneName || "请选择场景"}</Text>
+            {hasChildren && currentTrainName && (
+              <>
+                <Text style={styles.separator}>-</Text>
+                <Text style={styles.trainName}>{currentTrainName}</Text>
+              </>
+            )}
+          </View>
+        </View>
+        <Button
+          title={hasChildren ? trainingButtonText : "开始训练"}
+          variant="secondary"
+          onPress={onStartTraining}
+          disabled={disabled || (!hasChildren ? !sceneName : !currentTrainName)}
+          loading={loading}
+          style={styles.button}
+        />
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white", // 根据主题调整
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: "gray", // 根据主题调整
-  },
-  trainInfo: {
-    fontSize: 16,
-    color: "black", // 根据主题调整
-    marginLeft: 8,
-  },
-  trainButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  startTrain: {
-    fontSize: 16,
-  },
-});
 
 export default TrainInfo;
